@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "vpc_name" {
@@ -38,11 +38,17 @@ variable "variables_sub_cidr" {
 variable "variables_sub_az" {
   description = "Availability Zone used for Variables Subnet"
   type        = string
-  default     = "us-east-1a"
+  default     = "eu-west-2a"
 }
 
 variable "variables_sub_auto_ip" {
   description = "Set Automatic IP Assigment for Variables Subnet"
   type        = bool
   default     = true
+}
+
+variable "environment" {
+  description = "Environment"
+  type        = string
+  default     = "dev"
 }
