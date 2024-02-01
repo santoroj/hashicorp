@@ -51,7 +51,7 @@ Contributors: Bryan and Gabe
 */
 
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-2"
   default_tags {
     tags = {
       Environment = terraform.workspace
@@ -345,7 +345,7 @@ resource "aws_security_group" "vpc-web" {
 ```hcl
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "vpc_name" {
@@ -405,7 +405,7 @@ terraform show
 resource "aws_eip" "nat_gateway_eip" {
     domain               = "vpc"
     id                   = "eipalloc-0260c99a3a7a12677"
-    network_border_group = "us-east-1"
+    network_border_group = "eu-west-2"
     public_dns           = "ec2-3-92-117-57.compute-1.amazonaws.com"
     public_ip            = "3.92.117.57"
     public_ipv4_pool     = "amazon"
@@ -524,9 +524,9 @@ terraform state show aws_instance.web_server
 # aws_instance.web_server:
 resource "aws_instance" "web_server" {
     ami                                  = "ami-083654bd07b5da81d"
-    arn                                  = "arn:aws:ec2:us-east-1:508140242758:instance/i-0f87913a4b4da9db5"
+    arn                                  = "arn:aws:ec2:eu-west-2:508140242758:instance/i-0f87913a4b4da9db5"
     associate_public_ip_address          = true
-    availability_zone                    = "us-east-1b"
+    availability_zone                    = "eu-west-2b"
     cpu_core_count                       = 1
     cpu_threads_per_core                 = 1
     disable_api_termination              = false

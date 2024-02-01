@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "vpc_name" {
@@ -43,7 +43,7 @@ variable "variables_sub_cidr" {
 variable "variables_sub_az" {
   description = "Availability Zone used for Variables Subnet"
   type        = string
-  default     = "us-east-1a"
+  default     = "eu-west-2a"
 }
 
 variable "variables_sub_auto_ip" {
@@ -57,14 +57,14 @@ variable "phone_number" {
   sensitive = true
 }
 
-variable "us-east-1-azs" {
+variable "eu-west-2-azs" {
   type = list(string)
   default = [
-    "us-east-1a",
-    "us-east-1b",
-    "us-east-1c",
-    "us-east-1d",
-    "us-east-1e"
+    "eu-west-2a",
+    "eu-west-2b",
+    "eu-west-2c",
+    "eu-west-2d",
+    "eu-west-2e"
   ]
 }
 
@@ -81,11 +81,11 @@ variable "env" {
   default = {
     prod = {
       ip = "10.0.150.0/24"
-      az = "us-east-1a"
+      az = "eu-west-2a"
     }
     dev = {
       ip = "10.0.250.0/24"
-      az = "us-east-1e"
+      az = "eu-west-2e"
     }
   }
 }

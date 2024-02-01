@@ -12,18 +12,18 @@ listener "tcp" {
  tls_disable_client_certs = "true"
 }
 seal "awskms" {
-  region = "us-east-1"
+  region = "eu-west-2"
   kms_key_id = "12345678-abcd-1234-abcd-123456789101",
-  endpoint = "example.kms.us-east-1.vpce.amazonaws.com"
+  endpoint = "example.kms.eu-west-2.vpce.amazonaws.com"
 }
 reporting { #only for Vault 1.14 and up
     license {
         enabled = false
    }
 }
-api_addr = "https://vault-us-east-1.example.com:8200"
-cluster_addr = " https://node-a-us-east-1.example.com:8201"
-cluster_name = "vault-prod-us-east-1"
+api_addr = "https://vault-eu-west-2.example.com:8200"
+cluster_addr = " https://node-a-eu-west-2.example.com:8201"
+cluster_name = "vault-prod-eu-west-2"
 ui = false
 log_level = "INFO"
 license_path = "/opt/vault/vault.hcl"

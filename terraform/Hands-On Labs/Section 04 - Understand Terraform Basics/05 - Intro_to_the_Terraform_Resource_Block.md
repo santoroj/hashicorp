@@ -58,19 +58,19 @@ Within our resouce block, we have arguments that are specific to the type of res
 Ok, so now that we understand more about a resource block, let's create a new resource that will create an Amazon S3 bucket. In your main.tf file, add the following resource block:
 
 ```hcl
-resource "aws_s3_bucket" "my-new-S3-bucket" {   
+resource "aws_s3_bucket" "my-new-S3-bucket" {
   bucket = "my-new-tf-test-bucket-bryan"
 
-  tags = {     
-    Name = "My S3 Bucket"     
-    Purpose = "Intro to Resource Blocks Lab"   
-  } 
+  tags = {
+    Name = "My S3 Bucket"
+    Purpose = "Intro to Resource Blocks Lab"
+  }
 }
 
-resource "aws_s3_bucket_ownership_controls" "my_new_bucket_acl" {   
-  bucket = aws_s3_bucket.my-new-S3-bucket.id  
-  rule {     
-    object_ownership = "BucketOwnerPreferred"   
+resource "aws_s3_bucket_ownership_controls" "my_new_bucket_acl" {
+  bucket = aws_s3_bucket.my-new-S3-bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 ```
@@ -264,10 +264,10 @@ You're probably going to get an output like this:
 
 ```text
 Error: Inconsistent dependency lock file
- 
+
  The following dependency selections recorded in the lock file are inconsistent with the current configuration:
    - provider registry.terraform.io/hashicorp/random: required by this configuration but no version is selected
- 
+
  To update the locked dependency selections to match a changed configuration, run:
    terraform init -upgrade
 ```
@@ -409,7 +409,7 @@ Terraform will perform the following actions:
       ~ bucket_regional_domain_name = "my-new-tf-test-bucket-bryan.s3.amazonaws.com" -> (known after apply)
       ~ hosted_zone_id              = "Z3AQBSTGFYJSTF" -> (known after apply)
       ~ id                          = "my-new-tf-test-bucket-bryan" -> (known after apply)
-      ~ region                      = "us-east-1" -> (known after apply)
+      ~ region                      = "eu-west-2" -> (known after apply)
       ~ request_payer               = "BucketOwner" -> (known after apply)
       ~ tags                        = {
           + "Random"  = "Htd2k6vC5PrbOxGeCBxAcQ"

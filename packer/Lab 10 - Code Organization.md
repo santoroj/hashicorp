@@ -1,5 +1,6 @@
 # Lab: Code Organization
-Packer HCL Templates can be specified in a single `file.pkr.hcl` or in multiple files within a single folder.  To assist with code readability it may be beneficial to break out a large `pkr.hcl` file into separate files.
+
+Packer HCL Templates can be specified in a single `file.pkr.hcl` or in multiple files within a single folder. To assist with code readability it may be beneficial to break out a large `pkr.hcl` file into separate files.
 
 Duration: 30 minutes
 
@@ -9,6 +10,7 @@ Duration: 30 minutes
 - Task 4: Target a build for a particular build type or cloud target
 
 ### Task 1: Update Packer Template across multiple files
+
 Packer supports breaking out its template blocks across multiple files.
 
 ### Step 10.1.1
@@ -25,6 +27,7 @@ Create a `cloud_images` folder and create the following files in this folder:
 Place the following code blocks into the respective files.
 
 `aws.pkr.hcl`
+
 ```hcl
 data "amazon-ami" "windows_2019" {
   filters = {
@@ -32,7 +35,7 @@ data "amazon-ami" "windows_2019" {
   }
   most_recent = true
   owners      = ["801119661308"]
-  region      = "us-east-1"
+  region      = "eu-west-2"
 }
 
 data "amazon-ami" "windows_2022" {
@@ -41,7 +44,7 @@ data "amazon-ami" "windows_2022" {
   }
   most_recent = true
   owners      = ["801119661308"]
-  region      = "us-east-1"
+  region      = "eu-west-2"
 }
 
 source "amazon-ebs" "ubuntu_20" {
@@ -108,7 +111,7 @@ source "amazon-ebs" "windows_2019" {
   ami_name       = "my-windows-2019-aws-{{timestamp}}"
   communicator   = "winrm"
   instance_type  = "t2.micro"
-  region         = "us-east-1"
+  region         = "eu-west-2"
   source_ami     = "${data.amazon-ami.windows_2019.id}"
   user_data_file = "./scripts/SetUpWinRM.ps1"
   winrm_insecure = true
@@ -127,7 +130,7 @@ source "amazon-ebs" "windows_2022" {
   ami_name       = "my-windows-2022-aws-{{timestamp}}"
   communicator   = "winrm"
   instance_type  = "t2.micro"
-  region         = "us-east-1"
+  region         = "eu-west-2"
   source_ami     = "${data.amazon-ami.windows_2022.id}"
   user_data_file = "./scripts/SetUpWinRM.ps1"
   winrm_insecure = true
@@ -137,6 +140,7 @@ source "amazon-ebs" "windows_2022" {
 ```
 
 `azure.pkr.hcl`
+
 ```hcl
 source "azure-arm" "ubuntu_20" {
   subscription_id                   = var.azure_subscription_id
@@ -246,6 +250,7 @@ source "azure-arm" "windows_2022" {
 ```
 
 `linux-build.pkr.hcl`
+
 ```hcl
 packer {
   required_plugins {
@@ -302,6 +307,7 @@ EOF
 ```
 
 `windows-build.pkr.hcl`
+
 ```hcl
 build {
   name        = "windows"
@@ -326,6 +332,7 @@ EOF
 ```
 
 `variables.pkr.hcl`
+
 ```hcl
 variable "ami_prefix" {
   type    = string
@@ -334,7 +341,7 @@ variable "ami_prefix" {
 
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "instance_type" {
@@ -383,6 +390,7 @@ locals {
 ```
 
 `example.auto.pkrvars.hcl`
+
 ```hcl
 ami_prefix             = "my-ubuntu-var"
 azure_subscription_id  = "<your Azure subscription key>"
@@ -392,9 +400,11 @@ azure_client_secret    = "<your Azure client secret>"
 ```
 
 ### Step 10.1.1
+
 Create a `scripts` sub-directory and create a `SetupWinRM.ps1` file that will be used to bootstrap WinRM for an Windows images.
 
 `SetUpWinRM.ps1`
+
 ```powershell
 <powershell>
 
@@ -435,11 +445,12 @@ cmd.exe /c net start winrm
 ```
 
 ### Task 2: Validate the Packer Template
+
 Now that the source and build blocks have been organized by cloud target and build type, we can format and validate the Packer templates across the entire directory.
 
 ### Step 10.2.1
 
-Format and validate your configuration using the `packer fmt` and `packer validate` commands.  This time we will peform the command across all files within the `ubuntu_image` folder.
+Format and validate your configuration using the `packer fmt` and `packer validate` commands. This time we will peform the command across all files within the `ubuntu_image` folder.
 
 ```shell
 cd cloud_images
@@ -448,11 +459,13 @@ packer validate .
 ```
 
 ### Task 3: Build a new Image using Packer
+
 The `packer build` command can be run against all template files in a given folder.
 
-Before initiatiating the image build be sure your cloud credentials are set.  Here is an example of setting these credentials using environment variables.
+Before initiatiating the image build be sure your cloud credentials are set. Here is an example of setting these credentials using environment variables.
 
 > Note: Example using environment variables on a Linux or macOS:
+
 ```bash
 # AWS Credentials
 export AWS_ACCESS_KEY_ID=<your access key>
@@ -476,7 +489,8 @@ az group create -l eastus -n packer_images
 ```
 
 ### Step 10.3.1
-Initialize and Run a `packer build` across all files within the `cloud_images` 
+
+Initialize and Run a `packer build` across all files within the `cloud_images`
 
 ```shell
 packer init .
@@ -486,13 +500,14 @@ packer build .
 Packer will perform a build by aggregating the contents of all template files within a folder.
 
 ### Task 4: Target a build for a particular build type or cloud target
-Targets can be specified to only run for certain cloud targets.  In this example we will only perform a run for the Amazon builders within our directory of template files.
+
+Targets can be specified to only run for certain cloud targets. In this example we will only perform a run for the Amazon builders within our directory of template files.
 
 ```shell
 packer build -only "*.amazon*" .
 ```
 
-Targets can also be specified for certain OS types based on their source.  To build only `ubuntu 20` machines regardless of cloud
+Targets can also be specified for certain OS types based on their source. To build only `ubuntu 20` machines regardless of cloud
 
 ```shell
 packer build -only "*.ubuntu_20" .

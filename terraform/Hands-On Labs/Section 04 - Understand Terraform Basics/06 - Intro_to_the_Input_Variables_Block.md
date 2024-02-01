@@ -18,13 +18,14 @@ variable “<VARIABLE_NAME>” {
   validation = <RULES>
 }
 ```
+
 # Example
 
 ```hcl
 variable "aws_region" {
   type        = string
   description = "region used to deploy workloads"
-  default     = "us-east-1"
+  default     = "eu-west-2"
   validation {
     condition     = can(regex("^us-", var.aws_region))
     error_message = "The aws_region value must be a valid region in the
@@ -49,11 +50,11 @@ Before we can add any meaningful new variables, we should add a new resource to 
 resource "aws_subnet" "variables-subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = "10.0.250.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = "eu-west-2a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name      = "sub-variables-us-east-1a"
+    Name      = "sub-variables-eu-west-2a"
     Terraform = "true"
   }
 }
@@ -73,7 +74,7 @@ Terraform will perform the following actions:
   + resource "aws_subnet" "variables-subnet" {
       + arn                             = (known after apply)
       + assign_ipv6_address_on_creation = false
-      + availability_zone               = "us-east-1a"
+      + availability_zone               = "eu-west-2a"
       + availability_zone_id            = (known after apply)
       + cidr_block                      = "10.0.250.0/24"
       + id                              = (known after apply)
@@ -81,11 +82,11 @@ Terraform will perform the following actions:
       + map_public_ip_on_launch         = true
       + owner_id                        = (known after apply)
       + tags                            = {
-          + "Name"      = "sub-variables-us-east-1a"
+          + "Name"      = "sub-variables-eu-west-2a"
           + "Terraform" = "true"
         }
       + tags_all                        = {
-          + "Name"      = "sub-variables-us-east-1a"
+          + "Name"      = "sub-variables-eu-west-2a"
           + "Terraform" = "true"
         }
       + vpc_id                          = "vpc-069bc66bf87daccd6"
@@ -162,7 +163,7 @@ var.variables_sub_auto_ip
 At this point, we've declared the variables and have referenced them in our subnet resource, but Terraform has no idea what value you want to use for the new variables. Let's provide it with our values.
 
 - for `var.variables_sub_auto_ip`, type in "true" and press enter
-- for `var.variables_sub_az`, type in "us-east-1a" and press enter
+- for `var.variables_sub_az`, type in "eu-west-2a" and press enter
 - for `var.variables_sub_cidr`, type in "10.0.250.0/24" and press enter
 
 Now that Terraform knows the values we want to use, it can proceed with our configuration. When the `terraform plan` is completed, it should have found that there are no changes needed to our infrastructure because we've defined the same values for our subnet, but using variables instead.
@@ -189,7 +190,7 @@ variable "variables_sub_cidr" {
 variable "variables_sub_az" {
   description = "Availability Zone used for Variables Subnet"
   type        = string
-  default     = "us-east-1a"
+  default     = "eu-west-2a"
 }
 
 variable "variables_sub_auto_ip" {
@@ -211,7 +212,7 @@ Terraform will perform the following actions:
 
   # aws_subnet.variables-subnet must be replaced
 -/+ resource "aws_subnet" "variables-subnet" {
-      ~ arn                             = "arn:aws:ec2:us-east-1:603991114860:subnet/subnet-0b424eed2dc2822d0" -> (known after apply)
+      ~ arn                             = "arn:aws:ec2:eu-west-2:603991114860:subnet/subnet-0b424eed2dc2822d0" -> (known after apply)
       ~ availability_zone_id            = "use1-az6" -> (known after apply)
       ~ cidr_block                      = "10.0.250.0/24" -> "10.0.202.0/24" # forces replacement
       ~ id                              = "subnet-0b424eed2dc2822d0" -> (known after apply)
@@ -219,7 +220,7 @@ Terraform will perform the following actions:
       - map_customer_owned_ip_on_launch = false -> null
       ~ owner_id                        = "603991114860" -> (known after apply)
         tags                            = {
-            "Name"      = "sub-variables-us-east-1a"
+            "Name"      = "sub-variables-eu-west-2a"
             "Terraform" = "true"
         }
         # (5 unchanged attributes hidden)

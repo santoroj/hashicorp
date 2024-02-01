@@ -87,11 +87,11 @@ terraform console
 > module.autoscaling
 
 {
-  "autoscaling_group_arn" = "arn:aws:autoscaling:us-east-1:508140242758:autoScalingGroup:2a33891c-6c8b-4434-9386-bf1f1574523d:autoScalingGroupName/myasg-20211218123153166900000003"
+  "autoscaling_group_arn" = "arn:aws:autoscaling:eu-west-2:508140242758:autoScalingGroup:2a33891c-6c8b-4434-9386-bf1f1574523d:autoScalingGroupName/myasg-20211218123153166900000003"
   "autoscaling_group_availability_zones" = toset([
-    "us-east-1b",
-    "us-east-1c",
-    "us-east-1d",
+    "eu-west-2b",
+    "eu-west-2c",
+    "eu-west-2d",
   ])
   "autoscaling_group_default_cooldown" = 300
   "autoscaling_group_desired_capacity" = 1
@@ -112,7 +112,7 @@ terraform console
   "launch_configuration_arn" = (known after apply)
   "launch_configuration_id" = (known after apply)
   "launch_configuration_name" = (known after apply)
-  "launch_template_arn" = "arn:aws:ec2:us-east-1:508140242758:launch-template/lt-0bdc46cf90ccdad50"
+  "launch_template_arn" = "arn:aws:ec2:eu-west-2:508140242758:launch-template/lt-0bdc46cf90ccdad50"
   "launch_template_id" = "lt-0bdc46cf90ccdad50"
   "launch_template_latest_version" = 1
 }

@@ -48,7 +48,7 @@ terraform {
   backend "s3" {
     bucket = "myterraformstate"
     key    = "path/to/my/key"
-    region = "us-east-1"
+    region = "eu-west-2"
   }
 }
 ```
@@ -60,7 +60,7 @@ terraform {
   backend "s3" {
     bucket = "my-terraform-state-ghm"
     key    = "prod/aws_infra"
-    region = "us-east-1"
+    region = "eu-west-2"
   }
 }
 ```

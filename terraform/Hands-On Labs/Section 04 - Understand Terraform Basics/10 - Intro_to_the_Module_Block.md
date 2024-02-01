@@ -26,7 +26,7 @@ module "website_s3_bucket" {
   source = "./modules/aws-s3-static-website-bucket"
 
   bucket_name = var.s3_bucket_name
-  aws_region = "us-east-1"
+  aws_region = "eu-west-2"
 
   tags = {
     Terraform   = "true"
@@ -35,7 +35,7 @@ module "website_s3_bucket" {
 }
 ```
 
- - Task 1: Create a new module block to call a remote module
+- Task 1: Create a new module block to call a remote module
 
 In order to call a module, let's create a new module block. In the `main.tf` file, add the following code:
 
@@ -43,7 +43,7 @@ In order to call a module, let's create a new module block. In the `main.tf` fil
  module "subnet_addrs" {
   source  = "hashicorp/subnets/cidr"
   version = "1.0.0"
-  
+
   base_cidr_block = "10.0.0.0/22"
   networks = [
   {

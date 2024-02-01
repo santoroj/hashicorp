@@ -9,10 +9,10 @@
   "verify_outgoing": true,
   "encrypt": "xxxxxxxxxxxxxxxxxxxxxxxx",
   "data_dir": "/opt/consul/data",
-  "datacenter": "us-east-1",
+  "datacenter": "eu-west-2",
   "bind_addr": "10.10.10.10.10",
   "client_addr": "0.0.0.0",
-  "retry_join": ["provider=aws tag_key=Environment-Name tag_value=consul-cluster region=us-east-1"],
+  "retry_join": ["provider=aws tag_key=Environment-Name tag_value=consul-cluster region=eu-west-2"],
   "enable_syslog": true,
   "acl": {
      "tokens": {

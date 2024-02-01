@@ -34,7 +34,7 @@ Terraform will perform the following actions:
 
   # aws_subnet.terraform-subnet must be replaced
 -/+ resource "aws_subnet" "terraform-subnet" {
-      ~ arn                             = "arn:aws:ec2:us-east-1:603991114860:subnet/subnet-0b424eed2dc2822d0" -> (known after apply)
+      ~ arn                             = "arn:aws:ec2:eu-west-2:603991114860:subnet/subnet-0b424eed2dc2822d0" -> (known after apply)
       ~ availability_zone_id            = "use1-az6" -> (known after apply)
       ~ cidr_block                      = "10.0.202.0/24" -> "10.0.203.0/24" # forces replacement
       ~ id                              = "subnet-0b424eed2dc2822d0" -> (known after apply)
@@ -42,7 +42,7 @@ Terraform will perform the following actions:
       - map_customer_owned_ip_on_launch = false -> null
       ~ owner_id                        = "603991114860" -> (known after apply)
         tags                            = {
-            "Name"      = "sub-variables-us-east-1a"
+            "Name"      = "sub-variables-eu-west-2a"
             "Terraform" = "true"
         }
         # (5 unchanged attributes hidden)
@@ -64,7 +64,7 @@ In the same Terraform directory, create a new file called `terraform.tfvars`. In
 ```hcl
 # Public Subnet Values
 variables_sub_auto_ip = true
-variables_sub_az      = "us-east-1d"
+variables_sub_az      = "eu-west-2d"
 variables_sub_cidr    = "10.0.204.0/24"
 ```
 
@@ -82,8 +82,8 @@ Terraform will perform the following actions:
 
   # aws_subnet.terraform-subnet must be replaced
 -/+ resource "aws_subnet" "terraform-subnet" {
-      ~ arn                             = "arn:aws:ec2:us-east-1:603991114860:subnet/subnet-0d9ef3f20d902ff28" -> (known after apply)
-      ~ availability_zone               = "us-east-1a" -> "us-east-1d" # forces replacement
+      ~ arn                             = "arn:aws:ec2:eu-west-2:603991114860:subnet/subnet-0d9ef3f20d902ff28" -> (known after apply)
+      ~ availability_zone               = "eu-west-2a" -> "eu-west-2d" # forces replacement
       ~ availability_zone_id            = "use1-az6" -> (known after apply)
       ~ cidr_block                      = "10.0.203.0/24" -> "10.0.204.0/24" # forces replacement
       ~ id                              = "subnet-0d9ef3f20d902ff28" -> (known after apply)
@@ -91,11 +91,11 @@ Terraform will perform the following actions:
       - map_customer_owned_ip_on_launch = false -> null
       ~ owner_id                        = "603991114860" -> (known after apply)
       ~ tags                            = {
-          ~ "Name"      = "sub-variables-us-east-1a" -> "sub-variables-us-east-1d"
+          ~ "Name"      = "sub-variables-eu-west-2a" -> "sub-variables-eu-west-2d"
             # (1 unchanged element hidden)
         }
       ~ tags_all                        = {
-          ~ "Name"      = "sub-variables-us-east-1a" -> "sub-variables-us-east-1d"
+          ~ "Name"      = "sub-variables-eu-west-2a" -> "sub-variables-eu-west-2d"
             # (1 unchanged element hidden)
         }
         # (3 unchanged attributes hidden)
@@ -115,10 +115,10 @@ Finally, the last way that you can set the value for a Terraform variable is to 
 On the CLI, run the following command:
 
 ```text
-$ terraform plan -var variables_sub_az="us-east-1e" -var variables_sub_cidr="10.0.205.0/24"
+$ terraform plan -var variables_sub_az="eu-west-2e" -var variables_sub_cidr="10.0.205.0/24"
 ```
 
-You'll see that we've now set the variable `variables_sub_az` equal to "us-east-1e" and the variable `variables_sub_cidr` to "10.0.205.0/24" which are different from our current infrastructure. As a result, Terraform wants to replace the existing subnet. Terraform uses the last value it finds, overriding any previous values.
+You'll see that we've now set the variable `variables_sub_az` equal to "eu-west-2e" and the variable `variables_sub_cidr` to "10.0.205.0/24" which are different from our current infrastructure. As a result, Terraform wants to replace the existing subnet. Terraform uses the last value it finds, overriding any previous values.
 
 > Any values set on the CLI will take precedence over ANY other value set in a different way (ENV, tfvars, default value)
 
@@ -130,8 +130,8 @@ Terraform will perform the following actions:
 
   # aws_subnet.terraform-subnet must be replaced
 -/+ resource "aws_subnet" "terraform-subnet" {
-      ~ arn                             = "arn:aws:ec2:us-east-1:603991114860:subnet/subnet-036f7e67555980f77" -> (known after apply)
-      ~ availability_zone               = "us-east-1d" -> "us-east-1e" # forces replacement
+      ~ arn                             = "arn:aws:ec2:eu-west-2:603991114860:subnet/subnet-036f7e67555980f77" -> (known after apply)
+      ~ availability_zone               = "eu-west-2d" -> "eu-west-2e" # forces replacement
       ~ availability_zone_id            = "use1-az4" -> (known after apply)
       ~ cidr_block                      = "10.0.204.0/24" -> "10.0.205.0/24" # forces replacement
       ~ id                              = "subnet-036f7e67555980f77" -> (known after apply)
@@ -139,11 +139,11 @@ Terraform will perform the following actions:
       - map_customer_owned_ip_on_launch = false -> null
       ~ owner_id                        = "603991114860" -> (known after apply)
       ~ tags                            = {
-          ~ "Name"      = "sub-variables-us-east-1d" -> "sub-variables-us-east-1e"
+          ~ "Name"      = "sub-variables-eu-west-2d" -> "sub-variables-eu-west-2e"
             # (1 unchanged element hidden)
         }
       ~ tags_all                        = {
-          ~ "Name"      = "sub-variables-us-east-1d" -> "sub-variables-us-east-1e"
+          ~ "Name"      = "sub-variables-eu-west-2d" -> "sub-variables-eu-west-2e"
             # (1 unchanged element hidden)
         }
         # (3 unchanged attributes hidden)

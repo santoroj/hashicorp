@@ -37,7 +37,7 @@ resource "aws_eip" "nat_gateway_eip" {
     association_id       = "eipassoc-0f2986cc722254f2e"
     domain               = "vpc"
     id                   = "eipalloc-000eb0775a52a1e32"
-    network_border_group = "us-east-1"
+    network_border_group = "eu-west-2"
     network_interface    = "eni-0272f17827cbb823a"
     private_dns          = "ip-10-0-101-134.ec2.internal"
     private_ip           = "10.0.101.134"
@@ -55,7 +55,7 @@ resource "aws_eip" "nat_gateway_eip" {
 
 # aws_internet_gateway.internet_gateway:
 resource "aws_internet_gateway" "internet_gateway" {
-    arn      = "arn:aws:ec2:us-east-1:xxx:internet-gateway/igw-0bexxx"
+    arn      = "arn:aws:ec2:eu-west-2:xxx:internet-gateway/igw-0bexxx"
     id       = "igw-0be99153cf7f3c6ab"
     owner_id = "508140242758"
     tags     = {
@@ -207,9 +207,9 @@ Terraform State example:
 # aws_instance.web_server:
 resource "aws_instance" "web_server" {
     ami                                  = "ami-036490d46656c4818"
-    arn                                  = "arn:aws:ec2:us-east-1:508140242758:instance/i-0d544e90777ca8c2f"
+    arn                                  = "arn:aws:ec2:eu-west-2:508140242758:instance/i-0d544e90777ca8c2f"
     associate_public_ip_address          = true
-    availability_zone                    = "us-east-1b"
+    availability_zone                    = "eu-west-2b"
     cpu_core_count                       = 1
     cpu_threads_per_core                 = 1
     disable_api_termination              = false

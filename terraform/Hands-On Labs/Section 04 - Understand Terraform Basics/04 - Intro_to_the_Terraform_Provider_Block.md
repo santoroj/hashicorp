@@ -28,11 +28,11 @@ Edit the `provider` block within the `main.tf` to configure the Terraform AWS pr
 ```hcl
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-2"
 }
 ```
 
-This informs Terraform that it will deploy services into the `us-east-1` region within AWS.
+This informs Terraform that it will deploy services into the `eu-west-2` region within AWS.
 
 # Task 2: Configure AWS Credentials for Terraform provider
 
@@ -44,7 +44,7 @@ Static credentials can be provided by adding an access_key and secret_key in-lin
 
 ```hcl
 provider "aws" {
-  region     = "us-east-1"
+  region     = "eu-west-2"
   access_key = "my-access-key"
   secret_key = "my-secret-key"
 }
@@ -62,7 +62,7 @@ provider "aws" {
 ```bash
 $ export AWS_ACCESS_KEY_ID="anaccesskey"
 $ export AWS_SECRET_ACCESS_KEY="asecretkey"
-$ export AWS_DEFAULT_REGION="us-east-1"
+$ export AWS_DEFAULT_REGION="eu-west-2"
 ```
 
 ## Shared credentials/configuration file
@@ -71,7 +71,7 @@ You can use an AWS credentials or configuration file to specify your credentials
 
 ```hcl
 provider "aws" {
-  region                  = "us-east-1"
+  region                  = "eu-west-2"
   shared_credentials_file = "/Users/tf_user/.aws/creds"
   profile                 = "customprofile"
 }
@@ -99,7 +99,7 @@ Do you really want to destroy all resources?
 Destroy complete! Resources: 21 destroyed.
 ```
 
-Once the infrastructure has been from our configured region, (in the example's case `us-east-1`), we can modify the `region` argument in the `provider` block to specify a different region.
+Once the infrastructure has been from our configured region, (in the example's case `eu-west-2`), we can modify the `region` argument in the `provider` block to specify a different region.
 
 Update your `main.tf` to specify a different AWS region to redeploy your infrastructure.
 

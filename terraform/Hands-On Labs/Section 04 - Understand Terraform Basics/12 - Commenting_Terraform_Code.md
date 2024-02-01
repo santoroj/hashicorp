@@ -26,7 +26,7 @@ Update your `main.tf` to include a single line comment at the top of your file.
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-2"
 }
 ```
 
@@ -55,7 +55,7 @@ Contributors: Bryan and Gabe
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-2"
 }
 
 ```

@@ -36,7 +36,7 @@ terraform {
   backend "s3" {
     bucket = "myterraformstate"
     key    = "path/to/my/key"
-    region = "us-east-1"
+    region = "eu-west-2"
   }
 }
 ```
@@ -104,7 +104,7 @@ terraform {
     # Replace this with your bucket name!
     bucket = "myterraformstate"
     key    = "path/to/my/key"
-    region = "us-east-1"
+    region = "eu-west-2"
 
     # Replace this with your DynamoDB table name!
     dynamodb_table = "terraform-locks"

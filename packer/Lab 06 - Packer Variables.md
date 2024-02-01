@@ -11,13 +11,14 @@ Duration: 35 minutes
 - Task 7: Variablize your entire Packer configuration
 
 ### Packer Variables
+
 Packer user variables allow your templates to be further configured with variables from the command-line, environment variables, Vault, or files. This lets you parameterize your templates so that you can keep secret tokens, environment-specific data, and other types of information out of your templates. This maximizes the portability of the template.
 
 Variable values can be set in several ways:
 
 - Default Values
 - Inline using a `-var` parameter
-- Via a variables file and specifying the `-var-file` paramater 
+- Via a variables file and specifying the `-var-file` paramater
 
 ```bash
 -var 'key=value'       Variable for templates, can be used multiple times
@@ -25,8 +26,8 @@ Variable values can be set in several ways:
 ```
 
 ### Task 1: Add a variable block
-In order to set a user variable, you must define it either within the `variable` definition of your template, or using the command-line `-var` or `-var-file` flags.  Variable blocks are provided within Packer's configuration template to define variables.
 
+In order to set a user variable, you must define it either within the `variable` definition of your template, or using the command-line `-var` or `-var-file` flags. Variable blocks are provided within Packer's configuration template to define variables.
 
 Add the following variable block to your `aws-ubuntu.pkr.hcl` file.
 
@@ -38,7 +39,6 @@ variable "ami_prefix" {
 ```
 
 Variable blocks declare the variable name (ami_prefix), the data type (string), and the default value (my-ubuntu). While the variable type and default values are optional, we recommend you define these attributes when creating new variables.
-
 
 ### Task 2: Add a local variable block
 
@@ -53,6 +53,7 @@ locals {
 Local blocks declare the local variable name (timestamp) and the value (regex_replace(timestamp(), "[- TZ:]", "")). You can set the local value to anything, including other variables and locals. Locals are useful when you need to format commonly used values.
 
 ### Task 3: Update Packer Template to use Variables
+
 In your Packer template, update your source block to reference the `ami_prefix` variable. Notice how the template references the variable as `var.ami_prefix`
 
 ```hcl
@@ -60,17 +61,20 @@ In your Packer template, update your source block to reference the `ami_prefix` 
 ```
 
 ### Task 4: Build a new Image using Packer
+
 Format and validate your configuration using the packer fmt and packer validate commands.
+
 ```bash
-packer fmt aws-ubuntu.pkr.hcl 
+packer fmt aws-ubuntu.pkr.hcl
 packer validate aws-ubuntu.pkr.hcl
 ```
 
 ```bash
-packer build aws-ubuntu.pkr.hcl 
+packer build aws-ubuntu.pkr.hcl
 ```
 
 ### Task 5: Build a new image with a variable file
+
 Create a file named `example.pkrvars.hcl` and add the following snippet into it.
 
 ```hcl
@@ -83,10 +87,10 @@ Build the image with the --var-file flag.
 packer build --var-file=example.pkrvars.hcl aws-ubuntu.pkr.hcl
 ```
 
-
-Packer will automatically load any variable file that matches the name *.auto.pkrvars.hcl, without the need to pass the file via the command line.
+Packer will automatically load any variable file that matches the name \*.auto.pkrvars.hcl, without the need to pass the file via the command line.
 
 Rename your variable file so Packer automatically loads it.
+
 ```bash
 mv example.pkrvars.hcl example.auto.pkrvars.hcl
 ```
@@ -108,7 +112,7 @@ Add the following variables blocks:
 ```hcl
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "instance_type" {
@@ -118,7 +122,7 @@ variable "instance_type" {
 
 variable "ami_regions" {
   type    = list(string)
-  default = ["us-west-2", "us-east-1", "eu-central-1"]
+  default = ["us-west-2", "eu-west-2", "eu-central-1"]
 }
 
 variable "tags" {
@@ -158,7 +162,7 @@ source "amazon-ebs" "ubuntu" {
 Format and validate your configuration after replacing items using variables.
 
 ```bash
-packer fmt aws-ubuntu.pkr.hcl 
+packer fmt aws-ubuntu.pkr.hcl
 packer validate aws-ubuntu.pkr.hcl
 ```
 

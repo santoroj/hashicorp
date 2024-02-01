@@ -1,4 +1,5 @@
 # Lab: Building Images for Different Operating Systems
+
 This lab will walk you through updating your Packer Template to build different images for each operating system.
 
 Duration: 15 minutes
@@ -8,7 +9,8 @@ Duration: 15 minutes
 - Task 3: Build Images for different operating systems
 
 ### Task 1: Update Packer Template to support Multiple Operating Systems
-The Packer AWS builder supports the ability to create an AMI for multiple operating systems.  The source AMIs are specific to the operating sysetm being deployed, so we will need to specify a unique source for each unique operating system image.
+
+The Packer AWS builder supports the ability to create an AMI for multiple operating systems. The source AMIs are specific to the operating sysetm being deployed, so we will need to specify a unique source for each unique operating system image.
 
 ### Step 1.1.1
 
@@ -62,21 +64,24 @@ build {
 ```
 
 ### Task 2: Validate the Packer Template
-Rename the Packer templates `aws-ubuntu.pkr.hcl` to `aws-linux.pkr.hcl`as it now supports multiple flavors of linux.  This template can be auto formatted and validated via the Packer command line.
+
+Rename the Packer templates `aws-ubuntu.pkr.hcl` to `aws-linux.pkr.hcl`as it now supports multiple flavors of linux. This template can be auto formatted and validated via the Packer command line.
 
 ### Step 2.1.1
 
 Format and validate your configuration using the `packer fmt` and `packer validate` commands.
 
 ```shell
-packer fmt aws-linux.pkr.hcl 
+packer fmt aws-linux.pkr.hcl
 packer validate aws-linux.pkr.hcl
 ```
 
 ### Task 3: Build a new Image using Packer
+
 The `packer build` command is used to initiate the image build process for a given Packer template.
 
 ### Step 3.1.1
+
 Run a `packer build` for the `aws-linux.pkr.hcl` template.
 
 ```shell
@@ -127,12 +132,12 @@ Build 'amazon-linux.amazon-ebs.amazon-linux' finished after 4 minutes 20 seconds
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.ubuntu: AMIs were created:
 eu-central-1: ami-0d3149a44d9d5cf0a
-us-east-1: ami-0598ff452495420ec
+eu-west-2: ami-0598ff452495420ec
 us-west-2: ami-00c47ae1ca96cc667
 
 --> amazon-ebs.ubuntu: AMIs were created:
 eu-central-1: ami-0d3149a44d9d5cf0a
-us-east-1: ami-0598ff452495420ec
+eu-west-2: ami-0598ff452495420ec
 us-west-2: ami-00c47ae1ca96cc667
 
 --> centos.amazon-ebs.centos: AMIs were created:

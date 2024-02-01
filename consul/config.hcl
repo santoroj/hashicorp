@@ -1,6 +1,6 @@
-log_level  = "INFO"
-server     = true
-datacenter = "us-east-1"
+log_level          = "INFO"
+server             = true
+datacenter         = "eu-west-2"
 primary_datacenter = "dc1"
 
 ui_config {
@@ -16,7 +16,7 @@ verify_outgoing        = true
 verify_server_hostname = true
 
 # Gossip Encryption - generate key using consul keygen
-encrypt                = "pCOEKgL2SYHmDoFJqnolFUTJi7Vy+Qwyry04WIZUupc="
+encrypt = "pCOEKgL2SYHmDoFJqnolFUTJi7Vy+Qwyry04WIZUupc="
 
 leave_on_terminate = true
 data_dir           = "/opt/consul/data"
@@ -34,7 +34,7 @@ ports {
 
 # Cluster Join - Using Cloud Auto Join
 bootstrap_expect = 5
-retry_join       = ["provider=aws tag_key=Environment-Name tag_value=consul-cluster region=us-east-1"]
+retry_join       = ["provider=aws tag_key=Environment-Name tag_value=consul-cluster region=eu-west-2"]
 
 # Enable and Configure Consul ACLs
 acl = {
@@ -48,7 +48,7 @@ acl = {
 
 # Set raft multiplier to lowest value (best performance) - 1 is recommended for Production servers
 performance = {
-    raft_multiplier = 1
+  raft_multiplier = 1
 }
 
 # Enables auto encrypt for distribution of certs to Consul clients from the Connect CA

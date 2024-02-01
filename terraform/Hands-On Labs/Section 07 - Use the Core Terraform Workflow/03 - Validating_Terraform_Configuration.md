@@ -27,7 +27,7 @@ Update the VPC resource block to include a `region` argument
 
 ```hcl
 resource "aws_vpc" "vpc" {
-  region = "us-east-1"
+  region = "eu-west-2"
   cidr_block = var.vpc_cidr
 
   tags = {
@@ -46,7 +46,7 @@ terraform validate
   Error: Unsupported argument
 
     on main.tf line 25, in resource "aws_vpc" "vpc":
-    25:   region = "us-east-1"
+    25:   region = "eu-west-2"
 
   An argument named "region" is not expected here.
 ```
@@ -206,7 +206,7 @@ terraform validate -json
       },
       "snippet": {
         "context": "resource \"aws_vpc\" \"vpc\"",
-        "code": "  region = \"us-east-1\"",
+        "code": "  region = \"eu-west-2\"",
         "start_line": 25,
         "highlight_start_offset": 2,
         "highlight_end_offset": 8,

@@ -16,7 +16,7 @@ variable "deployment_version" {
 
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "source_ami_owner" {
@@ -63,7 +63,7 @@ data "amazon-ami" "amazon-linux-2-arm" {
 
 source "amazon-ebs" "vault-node" {
   ami_name      = local.ami_name
-  ami_regions   = ["us-east-1", "us-east-2"]
+  ami_regions   = ["eu-west-2", "us-east-2"]
   instance_type = "t4g.small"
   region        = var.region
   source_ami    = data.amazon-ami.amazon-linux-2-arm.id

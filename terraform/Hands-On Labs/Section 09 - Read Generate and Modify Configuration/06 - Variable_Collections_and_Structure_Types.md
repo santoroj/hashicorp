@@ -4,11 +4,11 @@ Duration: 10 minutes
 
 As you continue to work with Terraform, you're going to need a way to organize and structure data. This data could be input variables that you are giving to Terraform, or it could be the result of resource creation, like having Terraform create a fleet of web servers or other resources. Either way, you'll find that data needs to be organized yet accessible so it is referenceable throughout your configuration. The Terraform language uses the following types for values:
 
-* **string:** a sequence of Unicode characters representing some text, like "hello".
-* **number:** a numeric value. The number type can represent both whole numbers like 15 and fractional values like 6.283185.
-* **bool:** a boolean value, either true or false. bool values can be used in conditional logic.
-* **list (or tuple):** a sequence of values, like ["us-west-1a", "us-west-1c"]. Elements in a list or tuple are identified by consecutive whole numbers, starting with zero.
-* **map (or object):** a group of values identified by named labels, like {name = "Mabel", age = 52}. Maps are used to store key/value pairs.
+- **string:** a sequence of Unicode characters representing some text, like "hello".
+- **number:** a numeric value. The number type can represent both whole numbers like 15 and fractional values like 6.283185.
+- **bool:** a boolean value, either true or false. bool values can be used in conditional logic.
+- **list (or tuple):** a sequence of values, like ["us-west-1a", "us-west-1c"]. Elements in a list or tuple are identified by consecutive whole numbers, starting with zero.
+- **map (or object):** a group of values identified by named labels, like {name = "Mabel", age = 52}. Maps are used to store key/value pairs.
 
 Strings, numbers, and bools are sometimes called primitive types. Lists/tuples and maps/objects are sometimes called complex types, structural types, or collection types. Up until this point, we've primarily worked with string, number, or bool, although there have been some instances where we've provided a collection by way of input variables. In this lab, we will learn how to use the different collections and structure types available to us.
 
@@ -22,14 +22,14 @@ Strings, numbers, and bools are sometimes called primitive types. Lists/tuples a
 In Terraform, a _list_ is a sequence of like values that are identified by an index number starting with zero. Let's create one in our configuration to learn more about it. Create a new variable that includes a list of different availability zones in AWS. In your `variables.tf` file, add the following variable:
 
 ```hcl
-variable "us-east-1-azs" {
+variable "eu-west-2-azs" {
     type = list(string)
     default = [
-        "us-east-1a",
-        "us-east-1b",
-        "us-east-1c",
-        "us-east-1d",
-        "us-east-1e"
+        "eu-west-2a",
+        "eu-west-2b",
+        "eu-west-2c",
+        "eu-west-2d",
+        "eu-west-2e"
     ]
 }
 ```
@@ -40,11 +40,11 @@ In your `main.tf` file, add the following code that will reference the new list 
 resource "aws_subnet" "list_subnet" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.200.0/24"
-  availability_zone = var.us-east-1-azs
+  availability_zone = var.eu-west-2-azs
 }
 ```
 
-Go and and run a `terraform plan`. You should receive an error, and that's because the new variable `us-east-1-azs` we just created is a list of strings, and the argument `availability_zones` is expecting a single string. Therefore, we need to use an identifier to select which element to use in the list of strings.
+Go and and run a `terraform plan`. You should receive an error, and that's because the new variable `eu-west-2-azs` we just created is a list of strings, and the argument `availability_zones` is expecting a single string. Therefore, we need to use an identifier to select which element to use in the list of strings.
 
 Let's fix it. Update the `list_subnet` configuration to specify a specific element referenced by its indexed value from the list we provided - remember that indexes start at `0`.
 
@@ -52,11 +52,11 @@ Let's fix it. Update the `list_subnet` configuration to specify a specific eleme
 resource "aws_subnet" "list_subnet" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.200.0/24"
-  availability_zone = var.us-east-1-azs[0]
+  availability_zone = var.eu-west-2-azs[0]
 }
 ```
 
-Run a `terraform plan` again. Check out the output and notice that the new subnet will be created in `us-east-1a`, because that is the first string in our list of strings. If we used `var.us-east-1-azs[1]` in the configuration, Terraform would have built the subnet in `us-east-1b` since that's the second string in our list.
+Run a `terraform plan` again. Check out the output and notice that the new subnet will be created in `eu-west-2a`, because that is the first string in our list of strings. If we used `var.eu-west-2-azs[1]` in the configuration, Terraform would have built the subnet in `eu-west-2b` since that's the second string in our list.
 
 Go ahead and run `terraform apply` to apply the new configuration and build the subnet.
 
@@ -80,7 +80,7 @@ Now, let's reference the new variable we just created. Modify the `list_subnet` 
 resource "aws_subnet" "list_subnet" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.ip["prod"]
-  availability_zone = var.us-east-1-azs[0]
+  availability_zone = var.eu-west-2-azs[0]
 }
 ```
 
@@ -96,7 +96,7 @@ Modify the `list_subnet` in `main.tf` and update the cidr_block argument to the 
 resource "aws_subnet" "list_subnet" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.ip[var.environment]
-  availability_zone = var.us-east-1-azs[0]
+  availability_zone = var.eu-west-2-azs[0]
 }
 ```
 
@@ -115,7 +115,7 @@ resource "aws_subnet" "list_subnet" {
   for_each          = var.ip
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value
-  availability_zone = var.us-east-1-azs[0]
+  availability_zone = var.eu-west-2-azs[0]
 }
 ```
 
@@ -139,13 +139,14 @@ $ terraform console
 > aws_subnet.list_subnet
 {
   "dev" = {
-    "arn" = "arn:aws:ec2:us-east-1:1234567890:subnet/subnet-052d26040d4b91a51"
+    "arn" = "arn:aws:ec2:eu-west-2:1234567890:subnet/subnet-052d26040d4b91a51"
     "assign_ipv6_address_on_creation" = false
 ...
 ```
+
 ### Task 4: Use a more complex map variable to group information to simplify readability
 
-While the previous configuration works great, we're still limited to using only a single availability zone for both of our subnets. What if we wanted to use a single resource block but have unique settings for each subnet? Well, we can use a map of maps to group information together to make it easier to iterate over and, more importantly, make it easier to read for you and others using the code. 
+While the previous configuration works great, we're still limited to using only a single availability zone for both of our subnets. What if we wanted to use a single resource block but have unique settings for each subnet? Well, we can use a map of maps to group information together to make it easier to iterate over and, more importantly, make it easier to read for you and others using the code.
 
 Create a "map of maps" to group information per environment. In `variables.tf`, add the following variable:
 
@@ -155,11 +156,11 @@ variable "env" {
   default = {
     prod = {
       ip = "10.0.150.0/24"
-      az = "us-east-1a"
+      az = "eu-west-2a"
     }
     dev  = {
       ip = "10.0.250.0/24"
-      az = "us-east-1e"
+      az = "eu-west-2e"
     }
   }
 }

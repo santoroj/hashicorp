@@ -53,7 +53,7 @@ terraform state show aws_security_group.main
 ```bash
 # aws_security_group.main:
 resource "aws_security_group" "main" {
-    arn                    = "arn:aws:ec2:us-east-1:508140242758:security-group/sg-00157499a6de61832"
+    arn                    = "arn:aws:ec2:eu-west-2:508140242758:security-group/sg-00157499a6de61832"
     description            = "Managed by Terraform"
     egress                 = []
     id                     = "sg-00157499a6de61832"
@@ -148,7 +148,7 @@ terraform state show aws_security_group.main
 ```bash
 # aws_security_group.main:
 resource "aws_security_group" "main" {
-    arn                    = "arn:aws:ec2:us-east-1:508140242758:security-group/sg-00157499a6de61832"
+    arn                    = "arn:aws:ec2:eu-west-2:508140242758:security-group/sg-00157499a6de61832"
     description            = "Managed by Terraform"
     egress                 = []
     id                     = "sg-00157499a6de61832"
@@ -191,7 +191,7 @@ resource "aws_security_group" "main" {
 
 ## Task 5: Use a dynamic block with Terraform map
 
-Rather then using the local values, we can refactor our dynamic block to utilize a variable named `web_ingress` which is of map.  Let's first create the variable of type map, specifying some default values for our ingress rules inside our `variables.tf` file.
+Rather then using the local values, we can refactor our dynamic block to utilize a variable named `web_ingress` which is of map. Let's first create the variable of type map, specifying some default values for our ingress rules inside our `variables.tf` file.
 
 ```hcl
 variable "web_ingress" {
@@ -256,7 +256,7 @@ terraform state show aws_security_group.main
 ```bash
 # aws_security_group.main:
 resource "aws_security_group" "main" {
-    arn                    = "arn:aws:ec2:us-east-1:508140242758:security-group/sg-00157499a6de61832"
+    arn                    = "arn:aws:ec2:eu-west-2:508140242758:security-group/sg-00157499a6de61832"
     description            = "Managed by Terraform"
     egress                 = []
     id                     = "sg-00157499a6de61832"

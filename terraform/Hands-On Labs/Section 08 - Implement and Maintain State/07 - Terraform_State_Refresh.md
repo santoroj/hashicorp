@@ -70,9 +70,9 @@ terraform state show aws_instance.web_server
 
 resource "aws_instance" "web_server" {
     ami                                  = "ami-04505e74c0741db8d"
-    arn                                  = "arn:aws:ec2:us-east-1:508140242758:instance/i-0fdab85c96f92f0e9"
+    arn                                  = "arn:aws:ec2:eu-west-2:508140242758:instance/i-0fdab85c96f92f0e9"
     associate_public_ip_address          = true
-    availability_zone                    = "us-east-1b"
+    availability_zone                    = "eu-west-2b"
     cpu_core_count                       = 1
     cpu_threads_per_core                 = 1
     disable_api_termination              = false

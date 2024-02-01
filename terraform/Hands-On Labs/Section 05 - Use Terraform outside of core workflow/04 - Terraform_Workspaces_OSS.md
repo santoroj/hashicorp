@@ -42,7 +42,7 @@ Subcommands:
     show      Show the name of the current workspace
 ```
 
-We will utilize the current `default` workspace to store the state information for our `us-east-1` aws region.
+We will utilize the current `default` workspace to store the state information for our `eu-west-2` aws region.
 
 ## Task 2: Create a new Terraform Workspace for Development State
 
@@ -115,7 +115,7 @@ Do you want to perform these actions in workspace "development"?
 
 To move between terraform workspaces you can use the `terraform workspace` command.
 
-To move back to the infrastructure residing in `us-east-1` issue:
+To move back to the infrastructure residing in `eu-west-2` issue:
 
 ```bash
 terraform workspace select default

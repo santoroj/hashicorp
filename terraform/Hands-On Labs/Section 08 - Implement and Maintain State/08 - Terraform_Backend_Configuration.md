@@ -108,7 +108,7 @@ terraform {
   backend "s3" {
     bucket = "my-terraform-state-ghm"
     key    = "dev/aws_infra"
-    region = "us-east-1"
+    region = "eu-west-2"
   }
 }
 ```
@@ -137,7 +137,7 @@ Create a `dev-s3-state.hcl` to specify where the state should be saved.
 ```hcl
 bucket = "my-terraform-state-ghm"
 key    = "dev/aws_infra"
-region = "us-east-1"
+region = "eu-west-2"
 ```
 
 ```bash
@@ -163,7 +163,7 @@ terraform {
 
 ```hcl
 bucket = "my-terraform-state-ghm"
-region = "us-east-1"
+region = "eu-west-2"
 ```
 
 `dev-s3-state-key.hcl`
@@ -217,7 +217,7 @@ terraform {
   backend "s3" {
     bucket = "my-terraform-state-ghm"
     key    = "dev/aws_infra"
-    region = "us-east-1"
+    region = "eu-west-2"
   }
 }
 ```

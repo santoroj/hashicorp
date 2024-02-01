@@ -1,4 +1,5 @@
 # Lab: Building Images in Multiple Regions
+
 This lab will walk you through updating your Packer Template to build images across multiple regions within AWS.
 
 Duration: 30 minutes
@@ -8,7 +9,8 @@ Duration: 30 minutes
 - Task 3: Build Image across Multiple AWS Regions
 
 ### Task 1: Update Packer Template to support Multiple Regions
-The Packer AWS builder supports the ability to create an AMI in multiple AWS regions.  AMIs are specific to regions so this will ensure that the same image is available in all regions within a single cloud.  We will also leverage Tags to indentify our image.
+
+The Packer AWS builder supports the ability to create an AMI in multiple AWS regions. AMIs are specific to regions so this will ensure that the same image is available in all regions within a single cloud. We will also leverage Tags to indentify our image.
 
 ### Step 1.1.1
 
@@ -19,7 +21,7 @@ source "amazon-ebs" "ubuntu" {
   ami_name      = "packer-ubuntu-aws-{{timestamp}}"
   instance_type = "t2.micro"
   region        = "us-west-2"
-  ami_regions   = ["us-west-2", "us-east-1", "eu-central-1"]
+  ami_regions   = ["us-west-2", "eu-west-2", "eu-central-1"]
   source_ami_filter {
     filters = {
       name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
@@ -41,6 +43,7 @@ source "amazon-ebs" "ubuntu" {
 ```
 
 ### Task 2: Validate the Packer Template
+
 Packer templates can be auto formatted and validated via the Packer command line.
 
 ### Step 2.1.1
@@ -48,14 +51,16 @@ Packer templates can be auto formatted and validated via the Packer command line
 Format and validate your configuration using the `packer fmt` and `packer validate` commands.
 
 ```shell
-packer fmt aws-ubuntu.pkr.hcl 
+packer fmt aws-ubuntu.pkr.hcl
 packer validate aws-ubuntu.pkr.hcl
 ```
 
 ### Task 3: Build Image across Multiple AWS Regions
+
 The `packer build` command is used to initiate the image build process for a given Packer template.
 
 ### Step 3.1.1
+
 Run a `packer build` for the `aws-ubuntu.pkr.hcl` template.
 
 ```shell
@@ -89,7 +94,7 @@ amazon-ebs.ubuntu: output will be in this color.
     amazon-ebs.ubuntu: AMI: ami-00888c7a855bd746e
 ==> amazon-ebs.ubuntu: Waiting for AMI to become ready...
 ==> amazon-ebs.ubuntu: Copying/Encrypting AMI (ami-00888c7a855bd746e) to other regions...
-    amazon-ebs.ubuntu: Copying to: us-east-1
+    amazon-ebs.ubuntu: Copying to: eu-west-2
     amazon-ebs.ubuntu: Copying to: eu-central-1
     amazon-ebs.ubuntu: Waiting for all copies to complete...
 ==> amazon-ebs.ubuntu: Adding tags to AMI (ami-00888c7a855bd746e)...
@@ -125,12 +130,13 @@ Build 'amazon-ebs.ubuntu' finished after 8 minutes 39 seconds.
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.ubuntu: AMIs were created:
 eu-central-1: ami-0050f6e5610e47950
-us-east-1: ami-0c8839484fe21cabd
+eu-west-2: ami-0c8839484fe21cabd
 us-west-2: ami-00888c7a855bd746e
 ```
 
-Note that we now have created the same image in the `eu-central-1`, `us-east-1` and `us-west-2` regions.
+Note that we now have created the same image in the `eu-central-1`, `eu-west-2` and `us-west-2` regions.
 
 ##### Resources
-* Packer [Docs](https://www.packer.io/docs/index.html)
-* Packer [CLI](https://www.packer.io/docs/commands/index.html)
+
+- Packer [Docs](https://www.packer.io/docs/index.html)
+- Packer [CLI](https://www.packer.io/docs/commands/index.html)

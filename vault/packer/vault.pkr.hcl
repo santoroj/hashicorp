@@ -32,7 +32,7 @@ data "amazon-ami" "amazon-linux-2" {
 source "amazon-ebs" "amazon-ebs-amazonlinux-2" {
   ami_description             = "Vault - Amazon Linux 2"
   ami_name                    = "vault-amazonlinux2-vault-course"
-  ami_regions                 = ["us-east-1"]
+  ami_regions                 = ["eu-west-2"]
   ami_virtualization_type     = "hvm"
   associate_public_ip_address = true
   force_delete_snapshot       = true

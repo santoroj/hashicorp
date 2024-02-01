@@ -1,7 +1,7 @@
 global:
   name: consul
   enabled: true
-  datacenter: us-east-1 # datacenter name - must be unique for federated datacenters
+  datacenter: eu-west-2 # datacenter name - must be unique for federated datacenters
   gossipEncryption:
     autoGenerate: true # Automatically generate a gossip encryption key
 
@@ -12,12 +12,12 @@ global:
 
   acls:
     manageSystemACLs: true # Automatically bootstrap ACL system and manage tokens and policies
-    
+
   enterpriseLicense:
     secretName: consul-license # license from secret - this needs to be added to k8s secrets first
     secretKey: license
     enableLicenseAutoload: true
-  
+
   metrics:
     enabled: true
     agentMetricsRetentionTime: "1m"
@@ -30,7 +30,8 @@ global:
 server:
   image: hashicorp/consul-enterprise:1.16-ent
   replicas: 6 # Six-node cluster
-  affinity: | # allow multiple servers on same node for testing or lab environment
+  affinity:
+    | # allow multiple servers on same node for testing or lab environment
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution: null
   securityContext:
@@ -70,7 +71,7 @@ ui:
     provider: "prometheus"
     baseURL: http://prometheus-server.monitoring.svc.cluster.local
   dashboardURLTemplates:
-    service: "https://grafana.example.com/"  
+    service: "https://grafana.example.com/"
 
 dns:
   enabled: true # Enable DNS config within k8s cluster
@@ -82,7 +83,7 @@ connectInject:
     defaultEnabled: true # force all traffic thru proxy - use k8s/core dns for services
   metrics:
     defaultEnableMerging: true
-     
+
 controller:
   enabled: true # Enable Kubernetes CRDs
 
@@ -90,8 +91,8 @@ syncCatalog: # Sync K8s Catalog to Consul Service Discovery
   enabled: true
   toConsul: true # Enable sync to only Consul
   toK8s: false
-  k8sAllowNamespaces: ['*']
-  k8sDenyNamespaces: ['argo', 'default'] # don't want to see argo/default services in Consul service catalog 
+  k8sAllowNamespaces: ["*"]
+  k8sDenyNamespaces: ["argo", "default"] # don't want to see argo/default services in Consul service catalog
 
 meshGateway:
   enabled: true # required for federating via mesh gateways
@@ -100,7 +101,7 @@ ingressGateways:
   enabled: true
   defaults:
     service:
-      ports: [{port: 21000}]
+      ports: [{ port: 21000 }]
   gateways:
     - name: ingress-gateway
       service:

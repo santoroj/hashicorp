@@ -1,4 +1,5 @@
 # Lab: Integrating Packer with Ansible
+
 The Ansible Packer provisioner runs Ansible playbooks. It dynamically creates an Ansible inventory file configured to use SSH, runs an SSH server, executes ansible-playbook , and marshals Ansible plays through the SSH server to the machine being provisioned by Packer.
 
 Duration: 30 minutes
@@ -12,6 +13,7 @@ Duration: 30 minutes
 ## Task 1: Create Packer Template for Ubuntu server customized with an Ansible playbook
 
 ### Step 1.1.1
+
 Create a `ansible` folder with the following Packer Template called `aws-clumsy-bird.pkr.hcl` the following code:
 
 `aws-clumsy-bird.pkr.hcl`
@@ -69,7 +71,9 @@ build {
 
 }
 ```
+
 ### Step 1.1.2
+
 Create a `variables.pkr.hcl` with the following code:
 
 `variables.pkr.hcl`
@@ -82,7 +86,7 @@ variable "ami_prefix" {
 
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "instance_type" {
@@ -92,7 +96,7 @@ variable "instance_type" {
 
 variable "ami_regions" {
   type    = list(string)
-  default = ["us-east-1"]
+  default = ["eu-west-2"]
 }
 
 variable "ssh_username" {
@@ -114,7 +118,9 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 ```
+
 ### Step 1.1.3
+
 Create a `assets` sub directory with the following files inside it: `launch.sh` and `clumsy-bird.service`
 
 `launch.sh`
@@ -183,6 +189,7 @@ packer validate .
 ```
 
 ## Task 4: Build Image
+
 The `packer build` command is used to initiate the image build process for a given Packer template.
 
 ```shell
@@ -273,10 +280,11 @@ Build 'amazon-ebs.ubuntu_20' finished after 6 minutes 38 seconds.
 
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.ubuntu_20: AMIs were created:
-us-east-1: ami-0f56ee21bc688cbab
+eu-west-2: ami-0f56ee21bc688cbab
 ```
 
 ## Task 5: Set Ansible env variables via Packer
+
 The `ansible_env_vars` can be updated inside the `ansible` Packer provisioner.
 
 We will update our `ansible` provisioner block to set the `"Cow Selection"` to `random`.

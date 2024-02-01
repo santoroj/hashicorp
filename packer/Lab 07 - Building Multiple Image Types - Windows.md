@@ -1,4 +1,5 @@
 # Lab: Building Images for Different Operating Systems
+
 This lab will walk you through updating your Packer Template to build different images for each operating system.
 
 Duration: 15 minutes
@@ -8,7 +9,8 @@ Duration: 15 minutes
 - Task 3: Build Images for different operating systems
 
 ### Task 1: Update Packer Template to support Multiple Operating Systems
-The Packer AWS builder supports the ability to create an AMI for multiple operating systems.  The source AMIs are specific to the operating sysetm being deployed, so we will need to specify a unique source for each unique operating system image.
+
+The Packer AWS builder supports the ability to create an AMI for multiple operating systems. The source AMIs are specific to the operating sysetm being deployed, so we will need to specify a unique source for each unique operating system image.
 
 ### Step 1.1.1
 
@@ -30,7 +32,7 @@ data "amazon-ami" "windows_2019" {
   }
   most_recent = true
   owners      = ["801119661308"]
-  region      = "us-east-1"
+  region      = "eu-west-2"
 }
 
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
@@ -40,7 +42,7 @@ source "amazon-ebs" "windows-2019" {
   ami_name       = "my-windows-2019-aws-{{timestamp}}"
   communicator   = "winrm"
   instance_type  = "t2.micro"
-  region         = "us-east-1"
+  region         = "eu-west-2"
   source_ami     = "${data.amazon-ami.windows_2019.id}"
   user_data_file = "./scripts/SetUpWinRM.ps1"
   winrm_insecure = true
@@ -117,14 +119,16 @@ cmd.exe /c net start winrm
 Format and validate your configuration using the `packer fmt` and `packer validate` commands.
 
 ```shell
-packer fmt aws-windows.pkr.hcl 
+packer fmt aws-windows.pkr.hcl
 packer validate aws-windows.pkr.hcl
 ```
 
 ### Task 3: Build a new Image using Packer
+
 The `packer build` command is used to initiate the image build process for a given Packer template.
 
 ### Step 3.1.1
+
 Run a `packer build` for the `aws-windows.pkr.hcl` template.
 
 ```shell
@@ -148,7 +152,7 @@ amazon-ebs.windows-2019: output will be in this color.
 ==> amazon-ebs.windows-2019: Waiting for auto-generated password for instance...
     amazon-ebs.windows-2019: It is normal for this process to take up to 15 minutes,
     amazon-ebs.windows-2019: but it usually takes around 5. Please wait.
-    amazon-ebs.windows-2019:  
+    amazon-ebs.windows-2019:
     amazon-ebs.windows-2019: Password retrieved!
 ==> amazon-ebs.windows-2019: Using WinRM communicator to connect: 52.90.81.120
 ==> amazon-ebs.windows-2019: Waiting for WinRM to become available...
@@ -182,17 +186,18 @@ Build 'amazon-ebs.windows-2019' finished after 6 minutes 50 seconds.
 
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.windows-2019: AMIs were created:
-us-east-1: ami-0db0f27a8870be1ac
+eu-west-2: ami-0db0f27a8870be1ac
 
 --> amazon-ebs.windows-2019: AMIs were created:
-us-east-1: ami-0db0f27a8870be1ac
+eu-west-2: ami-0db0f27a8870be1ac
 ```
 
-
 ### Task 4: Add a Windows 2022 Image for the build
+
 If we wanted to add additional Windows versions, we can simply create another `data` and `source` block for the additional Windows version.
 
 ### Step 3.1.1
+
 Update our Packer template to account for adding a Windows 2022 Image
 
 ```hcl
@@ -202,14 +207,14 @@ data "amazon-ami" "windows_2022" {
   }
   most_recent = true
   owners      = ["801119661308"]
-  region      = "us-east-1"
+  region      = "eu-west-2"
 }
 
 source "amazon-ebs" "windows-2022" {
   ami_name       = "my-windows-2022-aws-{{timestamp}}"
   communicator   = "winrm"
   instance_type  = "t2.micro"
-  region         = "us-east-1"
+  region         = "eu-west-2"
   source_ami     = "${data.amazon-ami.windows_2022.id}"
   user_data_file = "./scripts/SetUpWinRM.ps1"
   winrm_insecure = true
@@ -230,6 +235,7 @@ build {
 ```
 
 Invoke a packer build to build multiple Windows Images
+
 ```shell
 packer fmt aws-windows.pkr.hcl
 packer build aws-windows.pkr.hcl
@@ -266,7 +272,7 @@ amazon-ebs.windows-2022: output will be in this color.
 ==> amazon-ebs.windows-2019: Waiting for auto-generated password for instance...
     amazon-ebs.windows-2019: It is normal for this process to take up to 15 minutes,
     amazon-ebs.windows-2019: but it usually takes around 5. Please wait.
-    amazon-ebs.windows-2022:  
+    amazon-ebs.windows-2022:
     amazon-ebs.windows-2022: Password retrieved!
 ==> amazon-ebs.windows-2022: Using WinRM communicator to connect: 54.224.204.17
 ==> amazon-ebs.windows-2022: Waiting for WinRM to become available...
@@ -278,7 +284,7 @@ amazon-ebs.windows-2022: output will be in this color.
 ==> amazon-ebs.windows-2022: Creating AMI my-windows-2022-aws-1703110275 from instance i-0a43eb41e04966aa5
     amazon-ebs.windows-2022: AMI: ami-071afe12419dd4b33
 ==> amazon-ebs.windows-2022: Waiting for AMI to become ready...
-    amazon-ebs.windows-2019:  
+    amazon-ebs.windows-2019:
     amazon-ebs.windows-2019: Password retrieved!
 ==> amazon-ebs.windows-2019: Using WinRM communicator to connect: 54.225.12.149
 ==> amazon-ebs.windows-2019: Waiting for WinRM to become available...
@@ -320,14 +326,14 @@ Build 'amazon-ebs.windows-2019' finished after 8 minutes 45 seconds.
 
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.windows-2022: AMIs were created:
-us-east-1: ami-071afe12419dd4b33
+eu-west-2: ami-071afe12419dd4b33
 
 --> amazon-ebs.windows-2022: AMIs were created:
-us-east-1: ami-071afe12419dd4b33
+eu-west-2: ami-071afe12419dd4b33
 
 --> amazon-ebs.windows-2019: AMIs were created:
-us-east-1: ami-019828e4594d916bd
+eu-west-2: ami-019828e4594d916bd
 
 --> amazon-ebs.windows-2019: AMIs were created:
-us-east-1: ami-019828e4594d916bd
+eu-west-2: ami-019828e4594d916bd
 ```

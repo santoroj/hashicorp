@@ -1,4 +1,5 @@
 # Lab: Packer Provisioners
+
 This lab will walk you through adding a provisioner to your Packer HCL Template. Provisioners use built-in and third-party software to install and configure the machine image after booting.
 
 Duration: 30 minutes
@@ -9,7 +10,8 @@ Duration: 30 minutes
 - Task 4: Install Web App
 
 ### Task 1: Update Packer Template to support Multiple Regions
-The Packer AWS builder supports the ability to create an AMI in multiple AWS regions.  AMIs are specific to regions so this will ensure that the same image is available in all regions within a single cloud.  We will also leverage Tags to indentify our image.
+
+The Packer AWS builder supports the ability to create an AMI in multiple AWS regions. AMIs are specific to regions so this will ensure that the same image is available in all regions within a single cloud. We will also leverage Tags to indentify our image.
 
 ### Step 1.1.1
 
@@ -20,7 +22,7 @@ source "amazon-ebs" "ubuntu" {
   ami_name      = "packer-ubuntu-aws-{{timestamp}}"
   instance_type = "t2.micro"
   region        = "us-west-2"
-  ami_regions   = ["us-west-2", "us-east-1", "eu-central-1"]
+  ami_regions   = ["us-west-2", "eu-west-2", "eu-central-1"]
   source_ami_filter {
     filters = {
       name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
@@ -61,6 +63,7 @@ build {
 ```
 
 ### Task 2: Validate the Packer Template
+
 Packer templates can be auto formatted and validated via the Packer command line.
 
 ### Step 2.1.1
@@ -68,21 +71,23 @@ Packer templates can be auto formatted and validated via the Packer command line
 Format and validate your configuration using the `packer fmt` and `packer validate` commands.
 
 ```shell
-packer fmt aws-ubuntu.pkr.hcl 
+packer fmt aws-ubuntu.pkr.hcl
 packer validate aws-ubuntu.pkr.hcl
 ```
 
 ### Task 3: Build a new Image using Packer
+
 The `packer build` command is used to initiate the image build process for a given Packer template.
 
 ### Step 3.1.1
+
 Run a `packer build` for the `aws-ubuntu.pkr.hcl` template.
 
 ```shell
 packer build aws-ubuntu.pkr.hcl
 ```
 
-Packer will print output similar to what is shown below.  Note the connection to SSH and the provisioning of the updtes and services before the image is finalized.
+Packer will print output similar to what is shown below. Note the connection to SSH and the provisioning of the updtes and services before the image is finalized.
 
 ```bash
 amazon-ebs.ubuntu: output will be in this color.
@@ -267,7 +272,7 @@ amazon-ebs.ubuntu: output will be in this color.
 ==> amazon-ebs.ubuntu: Waiting for AMI to become ready...
 ==> amazon-ebs.ubuntu: Copying/Encrypting AMI (ami-040bd66b2e79ccb64) to other regions...
     amazon-ebs.ubuntu: Copying to: eu-central-1
-    amazon-ebs.ubuntu: Copying to: us-east-1
+    amazon-ebs.ubuntu: Copying to: eu-west-2
     amazon-ebs.ubuntu: Waiting for all copies to complete...
 ==> amazon-ebs.ubuntu: Adding tags to AMI (ami-00604b26ad22ba5ee)...
 ==> amazon-ebs.ubuntu: Tagging snapshot: snap-0b508fbc52fdd47a7
@@ -308,21 +313,22 @@ Build 'amazon-ebs.ubuntu' finished after 8 minutes 45 seconds.
 ==> Builds finished. The artifacts of successful builds are:
 --> amazon-ebs.ubuntu: AMIs were created:
 eu-central-1: ami-08b5a99dee46eede8
-us-east-1: ami-00604b26ad22ba5ee
+eu-west-2: ami-00604b26ad22ba5ee
 us-west-2: ami-040bd66b2e79ccb64
 ```
-
 
 ### Task 4: Install Web App
 
 #### Step 4.1.1
-Copy the web application assets into our packer working directory.  You can download the assets from https://github.com/btkrausen/hashicorp/tree/master/packer/assets
+
+Copy the web application assets into our packer working directory. You can download the assets from https://github.com/btkrausen/hashicorp/tree/master/packer/assets
 
 ```bash
 mkdir assets
 ```
 
 #### Step 4.1.2
+
 Replace the existing `builder` block of your `aws-ubuntu.pkr.hcl` with the code below. This will add a `file` provisioner and an additional `shell` provisioner.
 
 ```hcl
@@ -355,7 +361,7 @@ build {
 Format and validate your configuration using the `packer fmt` and `packer validate` commands.
 
 ```shell
-packer fmt aws-ubuntu.pkr.hcl 
+packer fmt aws-ubuntu.pkr.hcl
 packer validate aws-ubuntu.pkr.hcl
 ```
 

@@ -76,7 +76,7 @@ Terraform will perform the following actions:
 
   # aws_security_group.main must be replaced
 -/+ resource "aws_security_group" "main" {
-      ~ arn                    = "arn:aws:ec2:us-east-1:508140242758:security-group/sg-00157499a6de61832" -> (known after apply)
+      ~ arn                    = "arn:aws:ec2:eu-west-2:508140242758:security-group/sg-00157499a6de61832" -> (known after apply)
       ~ egress                 = [] -> (known after apply)
       ~ id                     = "sg-00157499a6de61832" -> (known after apply)
       ~ name                   = "core-sg" -> "core-sg-global" # forces replacement
@@ -190,7 +190,7 @@ Terraform will perform the following actions:
 
   # aws_security_group.main must be replaced
 +/- resource "aws_security_group" "main" {
-      ~ arn                    = "arn:aws:ec2:us-east-1:508140242758:security-group/sg-00157499a6de61832" -> (known after apply)
+      ~ arn                    = "arn:aws:ec2:eu-west-2:508140242758:security-group/sg-00157499a6de61832" -> (known after apply)
       ~ egress                 = [] -> (known after apply)
       ~ id                     = "sg-00157499a6de61832" -> (known after apply)
       ~ name                   = "core-sg" -> "core-sg-global" # forces replacement

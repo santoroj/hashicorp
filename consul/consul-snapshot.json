@@ -10,7 +10,7 @@
          "service": "consul-snapshot"
       },
       "aws_storage": {
-        "s3_region": "us-east-1",
+        "s3_region": "eu-west-2",
         "s3_bucket": "xxx-xxx-consul-snapshots"
       }
    }

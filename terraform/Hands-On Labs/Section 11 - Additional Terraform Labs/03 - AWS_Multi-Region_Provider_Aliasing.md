@@ -12,7 +12,7 @@ The provider `alias` allows Terraform to differentiate the two AWS providers.
 ```hcl
 provider "aws" {
   alias   = "east"
-  region  = "us-east-1"
+  region  = "eu-west-2"
 }
 
 provider "aws" {

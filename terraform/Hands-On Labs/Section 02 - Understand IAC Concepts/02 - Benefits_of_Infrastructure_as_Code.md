@@ -12,7 +12,7 @@ References
 
 You have been tasked with deploying some basic infrastructure on AWS to host a proof of concept environment. The architecture needs to include both public and private subnets and span multiple Availability Zones to test failover and disaster recovery scenarios. You expect to host Internet-facing applications. Additionally, you have other applications that need to access the Internet to retrieve security and operating system updates.
 
-- **Task 1:** Create a new VPC in your account in the US-East-1 region
+- **Task 1:** Create a new VPC in your account in the eu-west-2 region
 - **Task 2:** Create public and private subnets in three different Availability Zones
 - **Task 3:** Deploy an Internet Gateway and attach it to the VPC
 - **Task 4:** Provision a NAT Gateway (a single instance will do) for outbound connectivity
@@ -53,7 +53,7 @@ In the VPC console, select **_Subnets_** from the left navigation panel. Click *
 
 ### **Step 2.2**
 
-Select the VPC created in Step 1 from the dropdown list. Give the subnet the name `private-subnet-1` and select `us-east-1a` from the dropdown list for the Availability Zone. Enter the IPv4 CIDR block of `10.0.0.0/24`.
+Select the VPC created in Step 1 from the dropdown list. Give the subnet the name `private-subnet-1` and select `eu-west-2a` from the dropdown list for the Availability Zone. Enter the IPv4 CIDR block of `10.0.0.0/24`.
 
 ![Create Subnets](./img/obj-1-create-new-subnet.png)
 
@@ -63,11 +63,11 @@ Repeat the previous step to create the additional subnets required to build out 
 
 |   Subnet Name    | Availability Zone |  CIDR Block   |
 | :--------------: | :---------------: | :-----------: |
-| private-subnet-2 |    us-east-1b     |  10.0.1.0/24  |
-| private-subnet-3 |    us-east-1c     |  10.0.2.0/24  |
-| public-subnet-1  |    us-east-1a     | 10.0.100.0/24 |
-| public-subnet-2  |    us-east-1b     | 10.0.101.0/24 |
-| public-subnet-3  |    us-east-1c     | 10.0.102.0/24 |
+| private-subnet-2 |    eu-west-2b     |  10.0.1.0/24  |
+| private-subnet-3 |    eu-west-2c     |  10.0.2.0/24  |
+| public-subnet-1  |    eu-west-2a     | 10.0.100.0/24 |
+| public-subnet-2  |    eu-west-2b     | 10.0.101.0/24 |
+| public-subnet-3  |    eu-west-2c     | 10.0.102.0/24 |
 
 ## Task 3: Deploy an Internet Gateway and attach it to the VPC.
 
@@ -178,7 +178,7 @@ In the `variables.tf`, copy the following variable definitions and save the file
 ```hcl
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "vpc_name" {
@@ -213,7 +213,7 @@ In the `main.tf` file, copy the following Terraform configuration and save the f
 ```hcl
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-2"
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -344,12 +344,14 @@ export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
 ```
 
 If you're running PowerShell on Windows, you'll need to use the following to set your AWS credentials:
+
 ```shell
 PS C:\> $Env:AWS_ACCESS_KEY_ID="<YOUR ACCESS KEY>"
 PS C:\> $Env:AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
 ```
 
 If you're using the default Windows command prompt, you can use the following to set your AWS credentials:
+
 ```shell
 C:\> setx AWS_ACCESS_KEY_ID <YOUR ACCESS KEY>
 C:\> setx AWS_SECRET_ACCESS_KEY <YOUR SECRET KEY>

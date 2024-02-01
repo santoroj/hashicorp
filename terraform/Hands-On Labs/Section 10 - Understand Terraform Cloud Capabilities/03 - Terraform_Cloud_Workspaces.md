@@ -99,7 +99,7 @@ To isoloate our production deployment from our development, let's create a new w
 - Once there, navigate to the `Variables` tab.
 - In the `Variables` tab, you can add variables related to the state file that was previously migrated.
 - To do this, first select the `+ Add variable` button
-- Let's add a Terraform variable named `aws_region` with a value of `us-east-1`
+- Let's add a Terraform variable named `aws_region` with a value of `eu-west-2`
 - Let's add a second Terraform variable named `vpc_name` with a value of `dev_vpc`
 - Let's add a third Terraform variable named `environment` with a value of `dev`
 - Choose the `Apply variable set` option to apply the `AWS Credentials` variable set
@@ -110,7 +110,7 @@ To isoloate our production deployment from our development, let's create a new w
 - Once there, navigate to the `Variables` tab.
 - In the `Variables` tab, you can add variables related to the state file that was previously migrated.
 - To do this, first select the `+ Add variable` button
-- Let's add a Terraform variable named `aws_region` with a value of `us-east-1`
+- Let's add a Terraform variable named `aws_region` with a value of `eu-west-2`
 - Let's add a second Terraform variable named `vpc_name` with a value of `prod_vpc`
 - Let's add a third Terraform variable named `environment` with a value of `prod`
 - Choose the `Apply variable set` option to apply the `AWS Credentials` variable set

@@ -15,11 +15,11 @@ In the next step we will install the [Terraform AWS provider](https://registry.t
 
 ```hcl
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.7.0"
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = "~> 3.0"
+      version = "~> 5.34.0"
     }
   }
 }

@@ -1,5 +1,6 @@
 # Lab: Integrating Packer with Terraform
-HashiCorp Terraform is a simple and powerful tool for safely and predictably creating, changing, and improving infrastructure.  Terraform is an infrastructure as code (IaC) tool that uses declarative configuration files written in HashiCorp Configuration Language (HCL) similar to Packer.  While Packer excels at building automated machine images, Terraform excels at deploying those images which is why Packer and Terraform are typically found to be complementary for infrastructure as code lifecycles.
+
+HashiCorp Terraform is a simple and powerful tool for safely and predictably creating, changing, and improving infrastructure. Terraform is an infrastructure as code (IaC) tool that uses declarative configuration files written in HashiCorp Configuration Language (HCL) similar to Packer. While Packer excels at building automated machine images, Terraform excels at deploying those images which is why Packer and Terraform are typically found to be complementary for infrastructure as code lifecycles.
 
 Duration: 30 minutes
 
@@ -11,9 +12,11 @@ Duration: 30 minutes
 This lab assumes that you have [Terraform](https://www.terraform.io/downloads.html) locally installed on your workstation and that you have completed the Packer and Ansible Lab succesfully.
 
 ## Task 1: Create Terraform code for deploying Packer Images
+
 Create a `packer_terraform` folder with the following Terraform configuration file called `main.tf`
 
 `main.tf`
+
 ```hcl
 variable "ami" {
   type        = string
@@ -22,7 +25,7 @@ variable "ami" {
 
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "appname" {
@@ -81,11 +84,12 @@ output "clumsy_bird" {
 }
 ```
 
-This Terraform configuration will deploy an AWS EC2 instance built from any AWS machine image.  We will be specifying the Packer AMI built in a previous lab.
+This Terraform configuration will deploy an AWS EC2 instance built from any AWS machine image. We will be specifying the Packer AMI built in a previous lab.
 
 ## Task 2: Execute Terraform and specify AMI image created by Packer
 
 ### Step 2.1.1
+
 Authenticate to AWS by specifying an ACCESS and SECRET ACCESS Keys
 
 ```bash
@@ -94,6 +98,7 @@ export AWS_SECRET_ACCESS_KEY="asecretkey"
 ```
 
 ### Step 2.1.2
+
 Initialize Terraform and run a plan.
 
 ```bash
@@ -102,7 +107,7 @@ terraform init
 terraform plan
 ```
 
-When prompted for the AMI id, utlize an AMI that was created in the Packer and Ansible Lab.  This ID will be located in the `manifest.json` file generated from the `packer build` from this lab.
+When prompted for the AMI id, utlize an AMI that was created in the Packer and Ansible Lab. This ID will be located in the `manifest.json` file generated from the `packer build` from this lab.
 
 ```
 terraform plan
@@ -242,13 +247,14 @@ Changes to Outputs:
 ```
 
 ### Step 2.1.3
+
 Deploy the Packer AMI image as an instance via a `terraform apply`.
 
 ```bash
 terraform apply
 ```
 
-When prompted for the AMI id, utlize an AMI that was created in the Packer and Ansible Lab.  This ID will be located in the `manifest.json` file generated from the `packer build` from this lab.
+When prompted for the AMI id, utlize an AMI that was created in the Packer and Ansible Lab. This ID will be located in the `manifest.json` file generated from the `packer build` from this lab.
 
 ```bash
 terraform apply
@@ -265,6 +271,7 @@ var.appname
 ```
 
 Validate the plan and enter `yes` to provision the instance.
+
 ```
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -274,13 +281,14 @@ Do you want to perform these actions?
 ```
 
 ## Task 3: Validate application deployment
+
 Now that the instance has been deployed, the application can be validate by browsing to the `clumsy_bird` url from the terraform output.
 
 Enjoy the game play.
 
 ![Clumsy Bird](img/clumsy_bird.png)
 
-When you are complete with the game issue a `terraform destroy` to clean up the server.  This will reduce the cost of your AWS spend.
+When you are complete with the game issue a `terraform destroy` to clean up the server. This will reduce the cost of your AWS spend.
 
 ```bash
 terraform destroy
@@ -288,7 +296,7 @@ terraform destroy
 
 ## Task 4: Update the Terraform Code to always pull the latest Packer machine image
 
-Now that we have succesfully deployed our application via Packer and Terraform, we are going to modify our Terraform code to always pull the latest machine image Packer creates.  This will allow Terraform to lookup our AMI without needing to prompt for an input.
+Now that we have succesfully deployed our application via Packer and Terraform, we are going to modify our Terraform code to always pull the latest machine image Packer creates. This will allow Terraform to lookup our AMI without needing to prompt for an input.
 
 Update our `main.tf` by adding:
 
@@ -338,8 +346,8 @@ variable "ami" {
 Execute a `terraform plan` and `terraform apply`
 
 ```bash
-terraform plan -var 'appname=ClumsyBird' 
-terraform apply -var 'appname=ClumsyBird' 
+terraform plan -var 'appname=ClumsyBird'
+terraform apply -var 'appname=ClumsyBird'
 ```
 
 Now that the instance has been deployed, the application can be validate by browsing to the `clumsy_bird` url from the terraform output.
@@ -348,4 +356,4 @@ Enjoy the game play.
 
 ![Clumsy Bird](img/clumsy_bird.png)
 
-When you are complete with the game issue a `terraform destroy` to clean up the server. 
+When you are complete with the game issue a `terraform destroy` to clean up the server.
