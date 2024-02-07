@@ -4,14 +4,14 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Owner = "Joes"
+      Owner       = "Joes"
       Provisioned = "Terraform"
       Environment = terraform.workspace
     }
   }
 }
 
-#Retrieve the list of AZs in the current AWS region
+# Retrieve the list of AZs in the current AWS region
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 
@@ -32,7 +32,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
-#Define the VPC 
+# Define the VPC 
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
@@ -43,7 +43,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-#Deploy the private subnets
+# Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
   for_each          = var.private_subnets
   vpc_id            = aws_vpc.vpc.id
@@ -56,7 +56,7 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-#Deploy the public subnets
+# Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
   for_each                = var.public_subnets
   vpc_id                  = aws_vpc.vpc.id
@@ -70,7 +70,7 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-#Create route tables for public and private subnets
+# Create route tables for public and private subnets
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.vpc.id
 
@@ -99,7 +99,7 @@ resource "aws_route_table" "private_route_table" {
   }
 }
 
-#Create route table associations
+# Create route table associations
 resource "aws_route_table_association" "public" {
   depends_on     = [aws_subnet.public_subnets]
   route_table_id = aws_route_table.public_route_table.id
@@ -114,7 +114,7 @@ resource "aws_route_table_association" "private" {
   subnet_id      = each.value.id
 }
 
-#Create Internet Gateway
+# Create Internet Gateway
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -122,7 +122,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
-#Create EIP for NAT Gateway
+# Create EIP for NAT Gateway
 resource "aws_eip" "nat_gateway_eip" {
   domain     = "vpc"
   depends_on = [aws_internet_gateway.internet_gateway]
@@ -131,7 +131,7 @@ resource "aws_eip" "nat_gateway_eip" {
   }
 }
 
-#Create NAT Gateway
+# Create NAT Gateway
 resource "aws_nat_gateway" "nat_gateway" {
   depends_on    = [aws_subnet.public_subnets]
   allocation_id = aws_eip.nat_gateway_eip.id
@@ -142,44 +142,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
-# Terraform Resource Block - To Build EC2 instance in Public Subnet
-resource "aws_instance" "web_server" {                                          # BLOCK
-  ami                         = data.aws_ami.ubuntu.id                          # Argument with data expression
-  instance_type               = "t2.micro"                                      # Argument
-  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id # Argument with value as expression
-  security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.ingress-ssh.id, aws_security_group.vpc-web.id]
-  associate_public_ip_address = true
-  key_name                    = aws_key_pair.generated.key_name
 
-
-  # user to connect to server
-  # authentication scheme to connect to server
-  # Using private ssh key to connect to server
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = tls_private_key.generated.private_key_pem
-    host        = self.public_ip
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo rm -rf /tmp",
-      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
-      "sudo ls -laR",
-      "sudo sh /tmp/assets/setup-web.sh",
-    ]
-  }
-
-  tags = {
-    Name = "Ubuntu EC2 Web Server"
-  }
-
-  # lifecycle {
-  #   ignore_changes = [security_groups]
-  # }
-
-}
 
 resource "aws_subnet" "variables-subnet" {
   vpc_id                  = aws_vpc.vpc.id
@@ -193,44 +156,95 @@ resource "aws_subnet" "variables-subnet" {
   }
 }
 
-resource "aws_instance" "Ubuntu_web_server" {                                   # BLOCK
-  ami                         = data.aws_ami.ubuntu.id                          # Argument with data expression
-  instance_type               = "t2.micro"                                      # Argument
-  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id # Argument with value as expression
-  security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.ingress-ssh.id, aws_security_group.vpc-web.id]
-  associate_public_ip_address = true
-  key_name                    = aws_key_pair.generated.key_name
+
+module "ubuntu_server" {
+  source    = "./modules/server"
+  ami       = data.aws_ami.ubuntu.id
+  size      = "t2.micro"
+  subnet_id = aws_subnet.public_subnets["public_subnet_1"].id
+  security_groups = [
+    aws_security_group.vpc-ping.id,
+    aws_security_group.ingress-ssh.id,
+    aws_security_group.vpc-web.id
+  ]
+}
 
 
-  # user to connect to server
-  # authentication scheme to connect to server
-  # Using private ssh key to connect to server
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = tls_private_key.generated.private_key_pem
-    host        = self.public_ip
-  }
+module "ubuntu_webserver" {
+  source      = "./modules/web_server"
+  ami         = data.aws_ami.ubuntu.id
+  size        = "t2.micro"
+  user        = "ubuntu"
+  key_name    = aws_key_pair.generated.key_name
+  private_key = tls_private_key.generated.private_key_pem
+  subnet_id   = aws_subnet.public_subnets["public_subnet_2"].id
+  security_groups = [
+    aws_security_group.vpc-ping.id,
+    aws_security_group.ingress-ssh.id,
+    aws_security_group.vpc-web.id
+  ]
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo rm -rf /tmp",
-      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
-      "sudo ls -laR",
-      "sudo sh /tmp/assets/setup-web.sh",
-    ]
-  }
+
+}
+
+
+module "autoscaling" {
+  # source  = "terraform-aws-modules/autoscaling/aws"
+  # version = "7.3.1"
+
+  source = "github.com/terraform-aws-modules/terraform-aws-autoscaling?ref=v7.3.1"
+
+
+  # Autoscaling group
+  name = "myasg"
+
+  vpc_zone_identifier = [aws_subnet.private_subnets["private_subnet_1"].id,
+  aws_subnet.private_subnets["private_subnet_2"].id]
+  # aws_subnet.private_subnets["private_subnet_3"].id]
+  min_size         = 1
+  max_size         = 3
+  desired_capacity = 1
+
+  image_id      = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
 
   tags = {
-    Name = "Ubuntu Web Server"
+    Name = "Web EC2 Server 2"
+  }
+
+}
+
+
+
+
+
+module "s3-bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "4.1.0"
+}
+
+output "s3_bucket_name" {
+  value = module.s3-bucket.s3_bucket_bucket_domain_name
+}
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.5.1"
+
+
+  name = "my-vpc-terraform"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
+
+  tags = {
+    Name        = "VPC from Module"
+    Terraform   = "true"
+    Environment = "dev"
   }
 }
-
-resource "aws_instance" "aws_linux" {
-  instance_type = "t2.micro"
-  ami           = "ami-0780837dd83465d73"
-
-}
-
-
-
