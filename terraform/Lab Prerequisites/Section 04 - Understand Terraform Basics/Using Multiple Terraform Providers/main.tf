@@ -1,6 +1,14 @@
 # Configure the AWS Provider
 provider "aws" {
   region = "eu-west-2"
+
+  default_tags {
+    tags = {
+      Owner = "Joes"
+      Provisioned = "Terraform"
+      Environment = terraform.workspace
+    }
+  }
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -156,22 +164,15 @@ resource "aws_instance" "web_server" {                                          
 
   provisioner "remote-exec" {
     inline = [
-      "sudo uname -a",
-      "sudo mkdir -p /usr/local/bin",
-      "sudo git clone https://github.com/hashicorp/demo-terraform-101 ",
+      "sudo rm -rf /tmp",
+      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
       "sudo ls -laR",
-      "sudo cp /tmp/demo-terraform-101/assets/webapp /usr/local/bin/",
-      "sudo chmod +x /usr/local/bin/*",
-      "sudo ls -laR",
-      "sudo cp /tmp/demo-terraform-101/assets/webapp.service /lib/systemd/system/webapp.service",
-      "sudo systemctl daemon-reload",
-      "sudo service webapp start",
-      "sudo systemctl enable webapp",
+      "sudo sh /tmp/assets/setup-web.sh",
     ]
   }
 
   tags = {
-    Name = "Ubuntu EC2 Server"
+    Name = "Ubuntu EC2 Web Server"
   }
 
   # lifecycle {
@@ -191,6 +192,46 @@ resource "aws_subnet" "variables-subnet" {
     Terraform = "true"
   }
 }
+
+resource "aws_instance" "Ubuntu_web_server" {                                   # BLOCK
+  ami                         = data.aws_ami.ubuntu.id                          # Argument with data expression
+  instance_type               = "t2.micro"                                      # Argument
+  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id # Argument with value as expression
+  security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.ingress-ssh.id, aws_security_group.vpc-web.id]
+  associate_public_ip_address = true
+  key_name                    = aws_key_pair.generated.key_name
+
+
+  # user to connect to server
+  # authentication scheme to connect to server
+  # Using private ssh key to connect to server
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = tls_private_key.generated.private_key_pem
+    host        = self.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo rm -rf /tmp",
+      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
+      "sudo ls -laR",
+      "sudo sh /tmp/assets/setup-web.sh",
+    ]
+  }
+
+  tags = {
+    Name = "Ubuntu Web Server"
+  }
+}
+
+resource "aws_instance" "aws_linux" {
+  instance_type = "t2.micro"
+  ami           = "ami-0780837dd83465d73"
+
+}
+
 
 
 
