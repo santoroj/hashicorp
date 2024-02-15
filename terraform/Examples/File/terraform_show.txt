@@ -1,0 +1,42 @@
+terraform show 
+
+# local_file.my-pet:
+resource "local_file" "my-pet" {
+    content              = "My pet is called finnegan!!"
+    directory_permission = "0777"
+    file_permission      = "0700"
+    filename             = "pet-name.txt"
+    id                   = "9874dce72f896b8152fd9d41d11d44fae6c4127f"
+}
+
+# random_pet.other-pet:
+resource "random_pet" "other-pet" {
+    id        = "Mr.quagga"
+    length    = 1
+    prefix    = "Mr"
+    separator = "."
+}
+
+# random_string.iac_random:
+resource "random_string" "iac_random" {
+    id          = "yUJQvJZX+X2:j{62M>pPH3H43a%Muca!B]HWV<3piQ{)4Gt5KNg%@s3)_+2fPbb+ZE2kQW9G}J4Tyb?IAt(pKyBHC<}kH3fU5*Sg"
+    length      = 100
+    lower       = true
+    min_lower   = 0
+    min_numeric = 0
+    min_special = 0
+    min_upper   = 5
+    number      = true
+    numeric     = true
+    result      = "yUJQvJZX+X2:j{62M>pPH3H43a%Muca!B]HWV<3piQ{)4Gt5KNg%@s3)_+2fPbb+ZE2kQW9G}J4Tyb?IAt(pKyBHC<}kH3fU5*Sg"
+    special     = true
+    upper       = true
+}
+
+
+Outputs:
+
+content = "My pet is called finnegan!!"
+filename = "pet-name.txt"
+mystring = "yUJQvJZX+X2:j{62M>pPH3H43a%Muca!B]HWV<3piQ{)4Gt5KNg%@s3)_+2fPbb+ZE2kQW9G}J4Tyb?IAt(pKyBHC<}kH3fU5*Sg"
+
