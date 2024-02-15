@@ -1,7 +1,7 @@
 
 resource "tls_private_key" "generated" {
   algorithm = "RSA"
-  rsa_bits = 4096
+  rsa_bits  = 4096
 }
 
 resource "local_file" "private_key_pem" {

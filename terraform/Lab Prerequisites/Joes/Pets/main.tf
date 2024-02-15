@@ -184,13 +184,13 @@ module "ubuntu_server" {
 
 
 module "ubuntu_webserver" {
-  source   = "./modules/web_server"
-  ami      = data.aws_ami.ubuntu.id
-  size     = "t2.micro"
-  user     = "ubuntu"
-  key_name = aws_key_pair.generated.key_name
+  source      = "./modules/web_server"
+  ami         = data.aws_ami.ubuntu.id
+  size        = "t2.micro"
+  user        = "ubuntu"
+  key_name    = aws_key_pair.generated.key_name
   private_key = tls_private_key.generated.private_key_pem
-  subnet_id = aws_subnet.public_subnets["public_subnet_2"].id
+  subnet_id   = aws_subnet.public_subnets["public_subnet_2"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
     aws_security_group.ingress-ssh.id,
@@ -265,6 +265,6 @@ resource "aws_instance" "web_server_2" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnets["public_subnet_2"].id
   tags = {
-    Name = "Web EC2 Server"
+    Name = "Web EC2 Server 2"
   }
 }

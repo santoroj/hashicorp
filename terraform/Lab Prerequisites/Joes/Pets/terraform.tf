@@ -28,7 +28,38 @@ terraform {
 }
 
 terraform {
-  backend "local" {
-    path = "mystate/terraform.tfstate"
-  }
+
+  # Example: Of Using local files 
+  # backend "local" {
+  #   path = "mystate/terraform.tfstate"
+  # }
+
+  # Exmaple: Using S3 + Dynamodb
+  # backend "s3" {
+  #   bucket = "joes-2024"
+  #   key    = "prod/aws_infra"
+  #   region = "eu-west-2"
+
+  #   dynamodb_table = "joes-2024-terraform-locks"
+  #   encrypt = true
+  # }
+
+    # Example:  Using Terraform Cloud
+    # cloud {
+    #   organization = "joes-2024"
+
+    #   workspaces {
+    #     name = "getting-started"
+    #   }
+    # }
+
+  # Example:  Using a http server as the backend
+  # backend "http" {
+  #   address        = "http://localhost:5000/terraform_state/my_state"
+  #   lock_address   = "http://localhost:5000/terraform_lock/my_state"
+  #   lock_method    = "PUT"
+  #   unlock_address = "http://localhost:5000/terraform_lock/my_state"
+  #   unlock_method  = "DELETE"
+  # }
+
 }
