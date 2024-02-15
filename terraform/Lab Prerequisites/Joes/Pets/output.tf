@@ -34,39 +34,21 @@ output "main_vpc_information" {
 }
 
 
-# output "server_public_ip" {
-#   value = module.server.public_ip
-# }
+output "ubuntu_server_public_dns_server" {
+  value = module.ubuntu_server.public_dns
+}
 
-# output "server_public_dns" {
-#   value = module.server.public_dns
-# }
-
-
-output "modules_public_ip_server_ubuntu_server" {
-  value = module.ubuntu_server.public_ip
+output "ubuntu_server_size" {
+  value = module.ubuntu_server.size
 }
 
 output "modules_public_dns_server_ubuntu_server" {
   value = module.ubuntu_server.public_dns
 }
 
-# Down from here
-# output "modules_public_ip_server_ubuntu_server" {
-#   value = module.ubuntu_webserver.public_ip
-# }
-
-# output "modules_public_dns_server_ubuntu_server" {
-#   value = module.ubuntu_server.public_dns
-# }
-
-output "ubuntu_server_size" {
-  value = module.ubuntu_server.size
+output "ubuntu_server_public_ip" {
+  value = module.ubuntu_server.server_public_ip
 }
-
-# output "server_public_ip" {
-#   value = module.ubuntu_server.server_public_ip
-# }
 
 output "asg_group_size" {
   value = module.autoscaling.autoscaling_group_max_size
@@ -74,10 +56,15 @@ output "asg_group_size" {
 
 
 
-output "my_public_web_key_name" {
+output "ubuntu_webserver_public_key_name" {
   value = module.ubuntu_webserver.public_key_name
 }
 
-output "my_private_web_key_name" {
-  value = module.ubuntu_webserver.public_key_name
+
+output "ubuntu_webserver_public_ip" {
+  value = module.ubuntu_webserver.public_ip
+}
+
+output "ubuntu_webserver_public_dns" {
+  value = module.ubuntu_server.public_dns
 }

@@ -52,6 +52,7 @@ variable "extra_tags" {
   default = {}
 }
 
+
 variable "private_key_file_name" {
   default = "MyAWSKey-pet.pem"
 }

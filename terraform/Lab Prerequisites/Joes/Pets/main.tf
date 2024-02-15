@@ -189,10 +189,7 @@ module "ubuntu_webserver" {
   size     = "t2.micro"
   user     = "ubuntu"
   key_name = aws_key_pair.generated.key_name
-  # private_key = tls_private_key.generated.private_key_pem
-  # private_key = "${file(var.private_key_path)}"
-  private_key = file("./${var.private_key_file_name}")
-
+  private_key = tls_private_key.generated.private_key_pem
   subnet_id = aws_subnet.public_subnets["public_subnet_2"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
@@ -212,8 +209,7 @@ module "autoscaling" {
   # Autoscaling group
   name = "myasg"
 
-  vpc_zone_identifier = [aws_subnet.private_subnets["private_subnet_1"].id,
-  aws_subnet.private_subnets["private_subnet_2"].id]
+  vpc_zone_identifier = [aws_subnet.private_subnets["private_subnet_1"].id, aws_subnet.private_subnets["private_subnet_2"].id]
   # aws_subnet.private_subnets["private_subnet_3"].id]
   min_size         = 1
   max_size         = 3
@@ -241,24 +237,34 @@ output "s3_bucket_name" {
   value = module.s3-bucket.s3_bucket_bucket_domain_name
 }
 
-# module "vpc" {
-#   source  = "terraform-aws-modules/vpc/aws"
-#   version = "5.5.1"
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.5.1"
 
 
-#   name = "my-vpc-terraform"
-#   cidr = "10.0.0.0/16"
+  name = "my-vpc-terraform"
+  cidr = "10.0.0.0/16"
 
-#   azs             = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
-#   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-#   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  azs             = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
-#   enable_nat_gateway = true
-#   enable_vpn_gateway = true
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
-#   tags = {
-#     Name        = "VPC from Module"
-#     Terraform   = "true"
-#     Environment = "dev"
-#   }
-# }
+  tags = {
+    Name        = "VPC from Module"
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+
+resource "aws_instance" "web_server_2" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.public_subnets["public_subnet_2"].id
+  tags = {
+    Name = "Web EC2 Server"
+  }
+}
